@@ -45,7 +45,7 @@
           <ul class="list-group">
             <li v-for="task in formData.tasks" :key="task.id" class="list-group-item d-flex justify-content-between align-items-center">
               {{ task.name }}
-              <span class="badge bg-primary rounded-pill">{{ task.date }} {{ task.time }}</span>
+              <span class="badge bg-info rounded-pill">{{ task.date }} {{ task.time }}</span>
             </li>
           </ul>
         </CCardBody>
