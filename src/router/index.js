@@ -52,6 +52,29 @@ const routes = [
         component: () => import('@/views/pages/Users/AddUsers.vue'),
       },
       {
+        path: '/pages/edit-user/:id',
+        name: 'edit-user',
+        component: () => import('@/views/pages/Users/EditUsers.vue'),
+      },
+
+      // {
+      //   path: '/pages/users',
+      //   name: 'Users',
+      //   component: {
+      //     render() {
+      //       return h(resolveComponent('router-view'))
+      //     },
+      //   },
+      //   redirect: '/pages/users',
+      //   children: [
+      //     {
+      //       path: '/pages/add-user',
+      //       name: 'add-user',
+      //       component: () => import('@/views/pages/Users/AddUsers.vue'),
+      //     },
+      //   ]
+      // },
+      {
         path: '/base',
         name: 'Base',
         component: {

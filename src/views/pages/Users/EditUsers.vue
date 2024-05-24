@@ -32,6 +32,7 @@
                             <CCol md="6">
                                 <CFormLabel for="memberId">ID Anggota</CFormLabel>
                                 <CFormInput type="text" id="memberId" v-model="formData.memberId" required disabled/>
+                                <CFormInput type="hidden" id="id" v-model="formData.id" required disabled/>
                             </CCol>
                             <CCol md="6">
                                 <CFormLabel for="memberType">Tipe Anggota</CFormLabel>
@@ -86,7 +87,6 @@
                                 <CFormTextarea id="address" v-model="formData.address" rows="3" required>
                                 </CFormTextarea>
                             </CCol>
-                            
                             <CCol xs="6">
                                 <CFormLabel for="password">Password</CFormLabel>
                                 <CFormInput type="password" id="password" v-model="formData.password" required />
@@ -96,7 +96,7 @@
                                 <CFormInput type="password" id="repassword" v-model="formData.repassword" required />
                             </CCol>
                             <div v-if="formData.memberType === '3'">
-                                
+
                                 <CCol md="12">
                                     <CFormLabel for="dailyActivity">Aktifitas Harian</CFormLabel>
                                     <CFormTextarea id="dailyActivity" v-model="formData.dailyActivity" rows="3">
@@ -114,9 +114,9 @@
                                 </CCol>
                             </div>
                         </CForm>
-                       
-                            <CButton type="button" color="primary" @click="saveChanges">Save</CButton>
-                            <CButton type="button" color="warning" @click="navigateToUser">Cancel</CButton>
+
+                        <CButton type="button" color="primary" @click="saveChanges">Save</CButton>
+                        <CButton type="button" color="warning" @click="navigateToUser">Cancel</CButton>
                     </CFormGroup>
                 </CCardBody>
             </CCard>
@@ -138,7 +138,7 @@ export default {
                 memberType: '',
                 fullName: '',
                 position: '',
-                bio: '',
+                bio: 'Do not be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...',
                 gender: '',
                 dob: '',
                 address: '',
@@ -156,7 +156,37 @@ export default {
             profilePhotoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Tom_Cruise_by_Gage_Skidmore.jpg/1200px-Tom_Cruise_by_Gage_Skidmore.jpg'
         };
     },
+    mounted() {
+        this.getUsersData(this.$route.params.id);
+    },
     methods: {
+        async getUsersData(idUser) {
+            try {
+                const response = await axios.get(`http://localhost:8000/api/users/${idUser}`);
+                this.users = response.data.data;
+                console.log(this.users.tipe_anggota);
+                this.formData = {
+                    profilePhoto: '',
+                    id: this.users.id,
+                    memberId: this.users.id_member,
+                    memberType: this.users.tipe_anggota,
+                    fullName: this.users.name,
+                    gender: this.users.jenis_kelamin,
+                    dob: this.users.tanggal_lahir,
+                    address: this.users.alamat,
+                    phoneNumber: this.users.telepon,
+                    email: this.users.email,
+                    height: this.users.berat_badan,
+                    weight: this.users.tinggi_badan,
+                    bloodType: this.users.golongan_darah,
+                    // dailyActivity: this.users.name,
+                    // fitnessGoals: this.users.name,
+                    // medicalHistory: this.users.name
+                };
+            } catch (error) {
+                console.error('Error fetching users:', error);
+            }
+        },
         triggerFileInput() {
             this.$refs.fileInput.click();
         },
@@ -176,8 +206,8 @@ export default {
                 for (const key in this.formData) {
                     formData.append(key, this.formData[key]);
                 }
-
-                const response = await axios.post('http://localhost:8000/api/users', formData, {
+              
+                const response = await axios.post('http://localhost:8000/api/users/edit', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
@@ -190,7 +220,7 @@ export default {
                     icon: "success"
                 });
 
-                this.resetForm();
+                // this.resetForm();
             } catch (error) {
                 console.error('Error saving data:', error);
                 this.$swal({
@@ -221,9 +251,6 @@ export default {
                 medicalHistory: ''
             };
             this.profilePhotoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Tom_Cruise_by_Gage_Skidmore.jpg/1200px-Tom_Cruise_by_Gage_Skidmore.jpg';
-        },
-        onMemberTypeChange() {
-            // Handle changes in member type
         },
         navigateToUser() {
             this.$router.push({ name: 'Users' });
