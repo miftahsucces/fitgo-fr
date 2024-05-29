@@ -39,7 +39,17 @@ const routes = [
       {
         path: '/pages/coaches',
         name: 'Coaches',
-        component: () => import('@/views/pages/Coaches.vue'),
+        component: () => import('@/views/pages/Coaches/Coaches.vue'),
+      },
+      {
+        path: '/pages/add-coaches',
+        name: 'add-coaches',
+        component: () => import('@/views/pages/Coaches/AddCoaches.vue'),
+      },
+      {
+        path: '/pages/edit-coaches/:id',
+        name: 'edit-coaches',
+        component: () => import('@/views/pages/Coaches/EditCoaches.vue'),
       },
       {
         path: '/pages/users',
@@ -55,6 +65,11 @@ const routes = [
         path: '/pages/edit-user/:id',
         name: 'edit-user',
         component: () => import('@/views/pages/Users/EditUsers.vue'),
+      },
+      {
+        path: '/pages/programs',
+        name: 'Programs',
+        component: () => import('@/views/pages/Programs/Programs.vue'),
       },
 
       // {

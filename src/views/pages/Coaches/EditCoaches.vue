@@ -1,7 +1,7 @@
 <template>
     <CRow>
         <CCol :xs="12" :md="4">
-            <CCard class="text-center profile-card">
+            <CCard class="text-center profile-card mb-3">
                 <CCardBody>
                     <div class="profile-photo mb-3">
                         <img :src="profilePhotoUrl" alt="Profile Photo" class="img-fluid rounded-circle custom-photo" />
@@ -31,17 +31,8 @@
                         <CForm class="row g-3 mb-3">
                             <CCol md="6">
                                 <CFormLabel for="memberId">ID Anggota</CFormLabel>
+                                <CFormInput type="hidden" id="inputIdUser" v-model="formData.inputIdUser"/>
                                 <CFormInput type="text" id="memberId" v-model="formData.memberId" required disabled/>
-                            </CCol>
-                            <CCol md="6">
-                                <CFormLabel for="memberType">Tipe Anggota</CFormLabel>
-                                <CFormSelect id="memberType" v-model="formData.memberType" @change="onMemberTypeChange"
-                                    required>
-                                    <option value="">Pilih Tipe</option>
-                                    <option value="1">Admin</option>
-                                    <option value="2">Personal Trainer</option>
-                                    <option value="3">Client/Member</option>
-                                </CFormSelect>
                             </CCol>
                             <CCol xs="6">
                                 <CFormLabel for="fullName">Nama Lengkap</CFormLabel>
@@ -50,6 +41,10 @@
                             <CCol xs="6">
                                 <CFormLabel for="email">Email</CFormLabel>
                                 <CFormInput type="email" id="email" v-model="formData.email" required />
+                            </CCol>
+                            <CCol xs="6">
+                                <CFormLabel for="nohp">No. HP</CFormLabel>
+                                <CFormInput type="text" id="nohp" v-model="formData.nohp" required />
                             </CCol>
                             <CCol md="6">
                                 <CFormLabel for="gender">Jenis Kelamin</CFormLabel>
@@ -112,14 +107,22 @@
                                     <CFormTextarea id="medicalHistory" v-model="formData.medicalHistory" rows="3">
                                     </CFormTextarea>
                                 </CCol>
+                                
                             </div>
                         </CForm>
-                       
-                            <CButton type="button" color="primary" @click="saveChanges">Save</CButton>
-                            <CButton type="button" color="warning" @click="navigateToUser">Back</CButton>
+                        
+                        
+                        <CButton type="button" color="primary" @click="saveChanges">Save</CButton>&nbsp;
+                        <CButton type="button" color="warning" @click="navigateToUser">Back</CButton>
+
                     </CFormGroup>
+                    
                 </CCardBody>
             </CCard>
+
+            <Specialization class="mt-3" />
+            <Certification class="mt-3"/>
+            
         </CCol>
     </CRow>
 </template>
@@ -128,8 +131,14 @@
 
 <script>
 import axios from 'axios';
+import Specialization from './Specialization.vue';
+import Certification from './Certification.vue';
 
 export default {
+  components: {
+    Specialization,
+    Certification
+  },
     data() {
         return {
             formData: {
@@ -138,7 +147,7 @@ export default {
                 memberType: '',
                 fullName: '',
                 position: '',
-                bio: '',
+                bio: 'Do not be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...',
                 gender: '',
                 dob: '',
                 address: '',
@@ -156,7 +165,37 @@ export default {
             profilePhotoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Tom_Cruise_by_Gage_Skidmore.jpg/1200px-Tom_Cruise_by_Gage_Skidmore.jpg'
         };
     },
+    mounted() {
+        this.getUsersData(this.$route.params.id);
+    },
     methods: {
+        async getUsersData(idUser) {
+            try {
+                const response = await axios.get(`http://localhost:8000/api/coaches/${idUser}`);
+                this.users = response.data.data;
+                console.log(this.users.tipe_anggota);
+                this.formData = {
+                    profilePhoto: '',
+                    inputIdUser: this.users.id_user,
+                    memberId: this.users.id,
+                    memberType: this.users.tipe_anggota,
+                    fullName: this.users.name,
+                    gender: this.users.jenis_kelamin,
+                    dob: this.users.tanggal_lahir,
+                    address: this.users.alamat,
+                    phoneNumber: this.users.telepon,
+                    email: this.users.email,
+                    height: this.users.berat_badan,
+                    weight: this.users.tinggi_badan,
+                    bloodType: this.users.golongan_darah,
+                    // dailyActivity: this.users.name,
+                    // fitnessGoals: this.users.name,
+                    // medicalHistory: this.users.name
+                };
+            } catch (error) {
+                console.error('Error fetching users:', error);
+            }
+        },
         triggerFileInput() {
             this.$refs.fileInput.click();
         },
@@ -176,8 +215,8 @@ export default {
                 for (const key in this.formData) {
                     formData.append(key, this.formData[key]);
                 }
-
-                const response = await axios.post('http://localhost:8000/api/users', formData, {
+              
+                const response = await axios.post('http://localhost:8000/api/coaches/edit', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
@@ -221,9 +260,6 @@ export default {
                 medicalHistory: ''
             };
             this.profilePhotoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Tom_Cruise_by_Gage_Skidmore.jpg/1200px-Tom_Cruise_by_Gage_Skidmore.jpg';
-        },
-        onMemberTypeChange() {
-            // Handle changes in member type
         },
         navigateToUser() {
             this.$router.push({ name: 'Users' });

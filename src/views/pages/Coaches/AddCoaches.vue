@@ -1,7 +1,7 @@
 <template>
     <CRow>
         <CCol :xs="12" :md="4">
-            <CCard class="text-center profile-card">
+            <CCard class="text-center profile-card mb-3">
                 <CCardBody>
                     <div class="profile-photo mb-3">
                         <img :src="profilePhotoUrl" alt="Profile Photo" class="img-fluid rounded-circle custom-photo" />
@@ -33,16 +33,6 @@
                                 <CFormLabel for="memberId">ID Anggota</CFormLabel>
                                 <CFormInput type="text" id="memberId" v-model="formData.memberId" required disabled/>
                             </CCol>
-                            <CCol md="6">
-                                <CFormLabel for="memberType">Tipe Anggota</CFormLabel>
-                                <CFormSelect id="memberType" v-model="formData.memberType" @change="onMemberTypeChange"
-                                    required>
-                                    <option value="">Pilih Tipe</option>
-                                    <option value="1">Admin</option>
-                                    <option value="2">Personal Trainer</option>
-                                    <option value="3">Client/Member</option>
-                                </CFormSelect>
-                            </CCol>
                             <CCol xs="6">
                                 <CFormLabel for="fullName">Nama Lengkap</CFormLabel>
                                 <CFormInput type="text" id="fullName" v-model="formData.fullName" required />
@@ -50,6 +40,10 @@
                             <CCol xs="6">
                                 <CFormLabel for="email">Email</CFormLabel>
                                 <CFormInput type="email" id="email" v-model="formData.email" required />
+                            </CCol>
+                            <CCol xs="6">
+                                <CFormLabel for="nohp">No. HP</CFormLabel>
+                                <CFormInput type="text" id="nohp" v-model="formData.nohp" required />
                             </CCol>
                             <CCol md="6">
                                 <CFormLabel for="gender">Jenis Kelamin</CFormLabel>
@@ -114,12 +108,15 @@
                                 </CCol>
                             </div>
                         </CForm>
-                       
-                            <CButton type="button" color="primary" @click="saveChanges">Save</CButton>
-                            <CButton type="button" color="warning" @click="navigateToUser">Back</CButton>
+                        
+                        <CButton type="button" color="primary" @click="saveChanges">Save</CButton>&nbsp;
+                        <CButton type="button" color="warning" @click="navigateToUser">Back</CButton>
+                            
                     </CFormGroup>
+                    
                 </CCardBody>
             </CCard>
+            
         </CCol>
     </CRow>
 </template>
@@ -128,8 +125,14 @@
 
 <script>
 import axios from 'axios';
+import Specialization from './Specialization.vue';
+import Certification from './Certification.vue';
 
 export default {
+  components: {
+    Specialization,
+    Certification
+  },
     data() {
         return {
             formData: {
@@ -177,7 +180,7 @@ export default {
                     formData.append(key, this.formData[key]);
                 }
 
-                const response = await axios.post('http://localhost:8000/api/users', formData, {
+                const response = await axios.post('http://localhost:8000/api/coaches', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
@@ -189,7 +192,8 @@ export default {
                     text: "User data saved successfully!",
                     icon: "success"
                 });
-
+                const userId = response.data.data.id;
+                this.$router.push({ name: 'edit-coaches', params: { id: userId } });
                 // this.resetForm();
             } catch (error) {
                 console.error('Error saving data:', error);

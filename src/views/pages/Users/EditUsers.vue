@@ -116,7 +116,7 @@
                         </CForm>
 
                         <CButton type="button" color="primary" @click="saveChanges">Save</CButton>
-                        <CButton type="button" color="warning" @click="navigateToUser">Cancel</CButton>
+                        <CButton type="button" color="warning" @click="navigateToUser">Back</CButton>
                     </CFormGroup>
                 </CCardBody>
             </CCard>

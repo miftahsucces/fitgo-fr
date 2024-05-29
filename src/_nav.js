@@ -24,7 +24,19 @@ export default [
     to: '/theme/typography',
     icon: 'cil-user',
   },
-  
+
+  {
+    component: 'CNavItem',
+    name: 'Training Programs',
+    to: '/pages/Programs',
+    icon: 'cil-speedometer',
+  },
+  {
+    component: 'CNavItem',
+    name: 'Training Management',
+    to: '/theme/typography',
+    icon: 'cil-speedometer',
+  },
   {
     component: 'CNavItem',
     name: 'Training Sessions',
