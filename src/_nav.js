@@ -21,7 +21,7 @@ export default [
   {
     component: 'CNavItem',
     name: 'Client',
-    to: '/theme/typography',
+    to: '/pages/Clients',
     icon: 'cil-user',
   },
 

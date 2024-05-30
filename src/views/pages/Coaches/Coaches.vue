@@ -72,7 +72,7 @@ export default {
   methods: {
     async fetchUsers() {
       try {
-        const response = await axios.get('http://localhost:8000/api/users');
+        const response = await axios.get('http://localhost:8000/api/coaches');
         this.users = response.data.data.map((user, index) => ({
           no: index + 1,
           ...user
@@ -89,7 +89,7 @@ export default {
       this.gridColumnApi = params.columnApi;
     },
     handleEditUser(userData) {
-      this.$router.push({ path: '/pages/edit-coaches/'+userData.id});
+      this.$router.push({ path: '/pages/edit-coaches/'+userData.id_user});
     },
   }
 }

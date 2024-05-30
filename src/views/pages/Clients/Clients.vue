@@ -3,7 +3,7 @@
     <CCol :xs="12">
       <CCard class="mb-4">
         <CCardHeader class="d-flex justify-content-between align-items-center">
-          <strong>Users</strong>
+          <strong>Clients</strong>
           <CButton color="primary" class="ml-auto" @click="navigateToAddUser">Add Data</CButton>
         </CCardHeader>
         <CCardBody>
@@ -21,15 +21,13 @@
 <script>
 import { AgGridVue } from "ag-grid-vue3";
 import axios from 'axios';
-import EditBtnCoaches from './EditBtnCoaches.vue';
-import DeleteBtnCoaches from './DeleteBtnCoaches.vue';
+import BtnClientsRender from './BtnClientsRender.vue';
 
 export default {
   name: 'users',
   components: {
     'ag-grid-vue': AgGridVue,
-    EditBtnCoaches,
-    DeleteBtnCoaches
+    BtnClientsRender,
   },
   data() {
     return {
@@ -41,13 +39,8 @@ export default {
         {
           headerName: 'Actions',
           field: 'actions',
-          cellRenderer: 'EditBtnCoaches'
+          cellRenderer: 'BtnClientsRender'
         },
-        {
-          headerName: '',
-          field: '',
-          cellRenderer: 'DeleteBtnCoaches',
-        }
       ],
       defaultColDef: {
         resizable: true,
@@ -58,8 +51,7 @@ export default {
       paginationPageSize: 10,
       paginationPageSizeSelector: [10, 20, 50],
       frameworkComponents: {
-        EditBtnCoaches,
-        DeleteBtnCoaches
+        BtnClientsRender,
       },
       gridContext: {
         componentParent: this
@@ -72,7 +64,7 @@ export default {
   methods: {
     async fetchUsers() {
       try {
-        const response = await axios.get('http://localhost:8000/api/users');
+        const response = await axios.get('http://localhost:8000/api/clients');
         this.users = response.data.data.map((user, index) => ({
           no: index + 1,
           ...user
@@ -82,14 +74,14 @@ export default {
       }
     },
     navigateToAddUser() {
-      this.$router.push({ name: 'add-coaches' });
+      this.$router.push({ name: 'add-clients' });
     },
     onGridReady(params) {
       this.gridApi = params.api;
       this.gridColumnApi = params.columnApi;
     },
     handleEditUser(userData) {
-      this.$router.push({ path: '/pages/edit-coaches/'+userData.id});
+      this.$router.push({ path: '/pages/edit-clients/'+userData.id_user});
     },
   }
 }

@@ -51,6 +51,25 @@ const routes = [
         name: 'edit-coaches',
         component: () => import('@/views/pages/Coaches/EditCoaches.vue'),
       },
+
+
+      {
+        path: '/pages/clients',
+        name: 'Clients',
+        component: () => import('@/views/pages/Clients/Clients.vue'),
+      },
+      {
+        path: '/pages/add-clients',
+        name: 'add-clients',
+        component: () => import('@/views/pages/Clients/AddClients.vue'),
+      },
+      {
+        path: '/pages/edit-clients/:id',
+        name: 'edit-clients',
+        component: () => import('@/views/pages/Clients/EditClients.vue'),
+      },
+
+      
       {
         path: '/pages/users',
         name: 'Users',

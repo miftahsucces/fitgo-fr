@@ -31,7 +31,7 @@
                         <CForm class="row g-3 mb-3">
                             <CCol md="6">
                                 <CFormLabel for="memberId">ID Anggota</CFormLabel>
-                                <CFormInput type="text" id="memberId" v-model="formData.memberId" required disabled/>
+                                <CFormInput type="text" id="memberId" v-model="formData.memberId" required disabled />
                             </CCol>
                             <CCol xs="6">
                                 <CFormLabel for="fullName">Nama Lengkap</CFormLabel>
@@ -80,7 +80,24 @@
                                 <CFormTextarea id="address" v-model="formData.address" rows="3" required>
                                 </CFormTextarea>
                             </CCol>
+
                             
+
+                            <CCol md="12">
+                                <CFormLabel for="dailyActivity">Aktifitas Harian</CFormLabel>
+                                <CFormTextarea id="dailyActivity" v-model="formData.dailyActivity" rows="3">
+                                </CFormTextarea>
+                            </CCol>
+                            <CCol md="12">
+                                <CFormLabel for="fitnessGoals">Tujuan Kebugaran</CFormLabel>
+                                <CFormTextarea id="fitnessGoals" v-model="formData.fitnessGoals" rows="3">
+                                </CFormTextarea>
+                            </CCol>
+                            <CCol md="12">
+                                <CFormLabel for="medicalHistory">Riwayat Medis</CFormLabel>
+                                <CFormTextarea id="medicalHistory" v-model="formData.medicalHistory" rows="3">
+                                </CFormTextarea>
+                            </CCol>
                             <CCol xs="6">
                                 <CFormLabel for="password">Password</CFormLabel>
                                 <CFormInput type="password" id="password" v-model="formData.password" required />
@@ -89,34 +106,16 @@
                                 <CFormLabel for="repassword">Re-Password</CFormLabel>
                                 <CFormInput type="password" id="repassword" v-model="formData.repassword" required />
                             </CCol>
-                            <div v-if="formData.memberType === '3'">
-                                
-                                <CCol md="12">
-                                    <CFormLabel for="dailyActivity">Aktifitas Harian</CFormLabel>
-                                    <CFormTextarea id="dailyActivity" v-model="formData.dailyActivity" rows="3">
-                                    </CFormTextarea>
-                                </CCol>
-                                <CCol md="12">
-                                    <CFormLabel for="fitnessGoals">Tujuan Kebugaran</CFormLabel>
-                                    <CFormTextarea id="fitnessGoals" v-model="formData.fitnessGoals" rows="3">
-                                    </CFormTextarea>
-                                </CCol>
-                                <CCol md="12">
-                                    <CFormLabel for="medicalHistory">Riwayat Medis</CFormLabel>
-                                    <CFormTextarea id="medicalHistory" v-model="formData.medicalHistory" rows="3">
-                                    </CFormTextarea>
-                                </CCol>
-                            </div>
                         </CForm>
-                        
+
                         <CButton type="button" color="primary" @click="saveChanges">Save</CButton>&nbsp;
                         <CButton type="button" color="warning" @click="navigateToUser">Back</CButton>
-                            
+
                     </CFormGroup>
-                    
+
                 </CCardBody>
             </CCard>
-            
+
         </CCol>
     </CRow>
 </template>
@@ -125,14 +124,8 @@
 
 <script>
 import axios from 'axios';
-import Specialization from './Specialization.vue';
-import Certification from './Certification.vue';
 
 export default {
-  components: {
-    Specialization,
-    Certification
-  },
     data() {
         return {
             formData: {
@@ -180,7 +173,7 @@ export default {
                     formData.append(key, this.formData[key]);
                 }
 
-                const response = await axios.post('http://localhost:8000/api/coaches', formData, {
+                const response = await axios.post('http://localhost:8000/api/clients', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
@@ -193,7 +186,7 @@ export default {
                     icon: "success"
                 });
                 const userId = response.data.data.id;
-                this.$router.push({ name: 'edit-coaches', params: { id: userId } });
+                this.$router.push({ name: 'edit-clients', params: { id: userId } });
                 // this.resetForm();
             } catch (error) {
                 console.error('Error saving data:', error);
@@ -230,7 +223,7 @@ export default {
             // Handle changes in member type
         },
         navigateToUser() {
-            this.$router.push({ name: 'Users' });
+            this.$router.push({ name: 'Clients' });
         }
     }
 };

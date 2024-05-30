@@ -1,6 +1,7 @@
 <template>
     <div>
       <CButton color="warning" size="sm" @click="onClickEdit">Edit</CButton>
+      <CButton color="danger" size="sm" @click="onClickDelete">Delete</CButton>
     </div>
   </template>
   
@@ -13,10 +14,17 @@
     },
     methods: {
       onClickEdit() {
-        if (this.params.context && this.params.context.componentParent && this.params.context.componentParent.handleEditUser) {
-          this.params.context.componentParent.handleEditUser(this.params.data);
+        if (this.params.context && this.params.context.componentParent && this.params.context.componentParent.handleEditProgram) {
+          this.params.context.componentParent.handleEditProgram(this.params.data);
         } else {
-          console.error('Context or handleEditUser method is undefined');
+          console.error('Context or handleEditProgram method is undefined');
+        }
+      },
+      onClickDelete() {
+        if (this.params.context && this.params.context.componentParent && this.params.context.componentParent.handleEditProgram) {
+          this.params.context.componentParent.handleDeleteProgram(this.params.data);
+        } else {
+          console.error('Context or handleDeleteProgram method is undefined');
         }
       }
     }

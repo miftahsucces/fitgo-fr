@@ -31,8 +31,8 @@
                         <CForm class="row g-3 mb-3">
                             <CCol md="6">
                                 <CFormLabel for="memberId">ID Anggota</CFormLabel>
-                                <CFormInput type="hidden" id="inputIdUser" v-model="formData.inputIdUser"/>
-                                <CFormInput type="text" id="memberId" v-model="formData.memberId" required disabled/>
+                                <CFormInput type="hidden" id="inputIdUser" v-model="formData.inputIdUser" />
+                                <CFormInput type="text" id="memberId" v-model="formData.memberId" required disabled />
                             </CCol>
                             <CCol xs="6">
                                 <CFormLabel for="fullName">Nama Lengkap</CFormLabel>
@@ -81,7 +81,24 @@
                                 <CFormTextarea id="address" v-model="formData.address" rows="3" required>
                                 </CFormTextarea>
                             </CCol>
-                            
+
+                           
+
+                            <CCol md="12">
+                                <CFormLabel for="dailyActivity">Aktifitas Harian</CFormLabel>
+                                <CFormTextarea id="dailyActivity" v-model="formData.dailyActivity" rows="3">
+                                </CFormTextarea>
+                            </CCol>
+                            <CCol md="12">
+                                <CFormLabel for="fitnessGoals">Tujuan Kebugaran</CFormLabel>
+                                <CFormTextarea id="fitnessGoals" v-model="formData.fitnessGoals" rows="3">
+                                </CFormTextarea>
+                            </CCol>
+                            <CCol md="12">
+                                <CFormLabel for="medicalHistory">Riwayat Medis</CFormLabel>
+                                <CFormTextarea id="medicalHistory" v-model="formData.medicalHistory" rows="3">
+                                </CFormTextarea>
+                            </CCol>
                             <CCol xs="6">
                                 <CFormLabel for="password">Password</CFormLabel>
                                 <CFormInput type="password" id="password" v-model="formData.password" required />
@@ -90,39 +107,20 @@
                                 <CFormLabel for="repassword">Re-Password</CFormLabel>
                                 <CFormInput type="password" id="repassword" v-model="formData.repassword" required />
                             </CCol>
-                            <div v-if="formData.memberType === '3'">
-                                
-                                <CCol md="12">
-                                    <CFormLabel for="dailyActivity">Aktifitas Harian</CFormLabel>
-                                    <CFormTextarea id="dailyActivity" v-model="formData.dailyActivity" rows="3">
-                                    </CFormTextarea>
-                                </CCol>
-                                <CCol md="12">
-                                    <CFormLabel for="fitnessGoals">Tujuan Kebugaran</CFormLabel>
-                                    <CFormTextarea id="fitnessGoals" v-model="formData.fitnessGoals" rows="3">
-                                    </CFormTextarea>
-                                </CCol>
-                                <CCol md="12">
-                                    <CFormLabel for="medicalHistory">Riwayat Medis</CFormLabel>
-                                    <CFormTextarea id="medicalHistory" v-model="formData.medicalHistory" rows="3">
-                                    </CFormTextarea>
-                                </CCol>
-                                
-                            </div>
                         </CForm>
-                        
-                        
+
+
                         <CButton type="button" color="primary" @click="saveChanges">Save</CButton>&nbsp;
                         <CButton type="button" color="warning" @click="navigateToUser">Back</CButton>
 
                     </CFormGroup>
-                    
+
                 </CCardBody>
             </CCard>
 
             <Specialization class="mt-3" />
-            <Certification class="mt-3"/>
-            
+            <Certification class="mt-3" />
+
         </CCol>
     </CRow>
 </template>
@@ -131,14 +129,8 @@
 
 <script>
 import axios from 'axios';
-import Specialization from './Specialization.vue';
-import Certification from './Certification.vue';
 
 export default {
-  components: {
-    Specialization,
-    Certification
-  },
     data() {
         return {
             formData: {
@@ -171,7 +163,7 @@ export default {
     methods: {
         async getUsersData(idUser) {
             try {
-                const response = await axios.get(`http://localhost:8000/api/coaches/${idUser}`);
+                const response = await axios.get(`http://localhost:8000/api/clients/${idUser}`);
                 this.users = response.data.data;
                 console.log(this.users.tipe_anggota);
                 this.formData = {
@@ -188,9 +180,9 @@ export default {
                     height: this.users.berat_badan,
                     weight: this.users.tinggi_badan,
                     bloodType: this.users.golongan_darah,
-                    // dailyActivity: this.users.name,
-                    // fitnessGoals: this.users.name,
-                    // medicalHistory: this.users.name
+                    dailyActivity: this.users.aktifitas,
+                    fitnessGoals: this.users.tujuan,
+                    medicalHistory: this.users.medis
                 };
             } catch (error) {
                 console.error('Error fetching users:', error);
@@ -215,8 +207,8 @@ export default {
                 for (const key in this.formData) {
                     formData.append(key, this.formData[key]);
                 }
-              
-                const response = await axios.post('http://localhost:8000/api/coaches/edit', formData, {
+
+                const response = await axios.post('http://localhost:8000/api/clients/edit', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
@@ -262,7 +254,7 @@ export default {
             this.profilePhotoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Tom_Cruise_by_Gage_Skidmore.jpg/1200px-Tom_Cruise_by_Gage_Skidmore.jpg';
         },
         navigateToUser() {
-            this.$router.push({ name: 'Users' });
+            this.$router.push({ name: 'Clients' });
         }
     }
 };

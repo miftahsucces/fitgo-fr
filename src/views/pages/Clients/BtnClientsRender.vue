@@ -1,6 +1,7 @@
 <template>
     <div>
       <CButton color="warning" size="sm" @click="onClickEdit">Edit</CButton>
+      <CButton color="danger" size="sm" @click="onClickDelete">Delete</CButton>
     </div>
   </template>
   
