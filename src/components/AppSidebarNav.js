@@ -2,11 +2,16 @@ import { defineComponent, h, onMounted, ref, resolveComponent } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 
 import { CBadge, CSidebarNav, CNavItem, CNavGroup, CNavTitle } from '@coreui/vue'
-import nav from '@/_nav.js'
+import { adminNav, personalTrainerNav, clientNav } from '@/_nav.js'
 
 import simplebar from 'simplebar-vue'
 import 'simplebar-vue/dist/simplebar.min.css'
 
+// Mock function to get user role
+const getUserRole = () => {
+  // Replace this with actual logic to get the user role
+  return 'admin'; // or 'personalTrainer' or 'client'
+}
 
 const normalizePath = (path) =>
   decodeURI(path)
@@ -50,6 +55,16 @@ const AppSidebarNav = defineComponent({
   setup() {
     const route = useRoute()
     const firstRender = ref(true)
+    const userRole = localStorage.getItem("roles"); // getUserRole() // Get the user role
+    let nav = []
+
+    if (userRole === '1') {
+      nav = adminNav
+    } else if (userRole === '2') {
+      nav = personalTrainerNav
+    } else if (userRole === '3') {
+      nav = clientNav
+    }
 
     onMounted(() => {
       firstRender.value = false

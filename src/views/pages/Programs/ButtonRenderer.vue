@@ -7,7 +7,7 @@
   
   <script>
   export default {
-    name: 'EditButtonRenderer',
+    name: 'ButtonRenderer',
     props: {
       data: Object,
       context: Object

@@ -80,13 +80,13 @@ import {
   cilUserFemale,
   cilUserFollow,
   cilXCircle,
-  cilWalk,cilAlarm,
+  cilWalk,cilAlarm,cilToggleOff,cilAccountLogout,cilChartLine,cilTablet,cilSpreadsheet,cilHome,cilAddressBook,cilGroup
 } from '@coreui/icons'
 
 export const iconsSet = Object.assign(
   {},
   {
-    cilAlarm,
+    cilAlarm,cilToggleOff,cilAccountLogout,cilChartLine,cilTablet,cilSpreadsheet,cilHome,cilAddressBook,cilGroup,
     cilWalk,
     cilBurn,
     cilArrowBottom,

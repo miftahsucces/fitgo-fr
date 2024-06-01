@@ -46,7 +46,7 @@
 <script>
 import { AgGridVue } from "ag-grid-vue3";
 import axios from 'axios';
-import EditButtonRenderer from './EditButtonRenderer.vue';
+import EditButtonRenderer from './ButtonRenderer.vue';
 
 export default {
   name: 'programs',

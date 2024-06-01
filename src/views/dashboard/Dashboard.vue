@@ -52,7 +52,7 @@
       </CCard>
     </CCol>
     <CCol :xs="12" :md="8">
-      <GreetingCard name="Gilbert" date="18 August 2020" />
+      <GreetingCard :name="formData.fullName" :date="currentDate" />
       <WidgetsStatsD class="mb-4 mt-1" />
       <CCard class="mb-4 mt-4">
         <CCardBody>
@@ -92,7 +92,7 @@ export default {
   data() {
     return {
       formData: {
-        fullName: 'Rodney Gilbert',
+        fullName: localStorage.getItem("name"),
         position: 'Athletic Coach',
         height: 185,
         weight: 65,
@@ -106,6 +106,11 @@ export default {
         ],
       },
       profilePhotoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Tom_Cruise_by_Gage_Skidmore.jpg/1200px-Tom_Cruise_by_Gage_Skidmore.jpg', // Default profile photo URL
+      currentDate: new Date().toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      }),
     };
   },
 };

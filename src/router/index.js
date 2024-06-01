@@ -90,6 +90,53 @@ const routes = [
         name: 'Programs',
         component: () => import('@/views/pages/Programs/Programs.vue'),
       },
+      {
+        path: '/pages/trainings',
+        name: 'Trainings',
+        component: () => import('@/views/pages/Trainings/Trainings.vue'),
+      },
+
+      {
+        path: '/pages/add-trainings',
+        name: 'Add Training',
+        component: () => import('@/views/pages/Trainings/AddSchedule.vue'),
+      },
+
+      {
+        path: '/pages/edit-trainings/:id',
+        name: 'Edit Training',
+        component: () => import('@/views/pages/Trainings/EditSchedule.vue'),
+      },
+      {
+        path: '/pages/my-profile',
+        name: 'My Profile',
+        component: () => import('@/views/pages/Profiles/Profiles.vue'),
+      },
+      {
+        path: '/pages/trainer-schedule',
+        name: 'Trainer Schedule',
+        component: () => import('@/views/pages/Schedules/TrainerSchedule.vue'),
+      },
+      {
+        path: '/pages/my-schedule',
+        name: 'My Schedule',
+        component: () => import('@/views/pages/Schedules/MySchedule.vue'),
+      },
+      {
+        path: '/pages/client-progress',
+        name: 'Client Progress',
+        component: () => import('@/views/pages/Progress/ClientProgress.vue'),
+      },
+      {
+        path: '/pages/input-progress/:id',
+        name: 'Input Progress',
+        component: () => import('@/views/pages/Progress/InputProgress.vue'),
+      },
+      {
+        path: '/pages/my-progress',
+        name: 'My Progress',
+        component: () => import('@/views/pages/Progress/MyProgress.vue'),
+      },
 
       // {
       //   path: '/pages/users',

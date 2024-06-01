@@ -1,75 +1,137 @@
-
-export default [
+export const adminNav = [
   {
     component: 'CNavItem',
     name: 'Dashboard',
     to: '/dashboard',
-    icon: 'cil-speedometer',
+    icon: 'cilHome',
   },
   {
-    component: 'CNavItem',
+    component: 'CNavGroup',
     name: 'Users',
-    to: '/pages/Users',
-    icon: 'cil-people',
+    to: '/buttons',
+    icon: 'cilAddressBook',
+    items: [
+      {
+        component: 'CNavItem',
+        name: 'Coaches',
+        to: '/pages/Coaches',
+      },
+      {
+        component: 'CNavItem',
+        name: 'Client',
+        to: '/pages/Clients',
+      },
+    ],
   },
   {
     component: 'CNavItem',
-    name: 'Coaches',
-    to: '/pages/Coaches',
-    icon: 'cil-user',
+    name: 'My Profile',
+    to: '/pages/my-profile',
+    icon: 'cilTablet',
   },
   {
     component: 'CNavItem',
-    name: 'Client',
-    to: '/pages/Clients',
-    icon: 'cil-user',
-  },
-
-  {
-    component: 'CNavItem',
-    name: 'Training Programs',
+    name: 'Programs',
     to: '/pages/Programs',
     icon: 'cil-speedometer',
   },
   {
     component: 'CNavItem',
     name: 'Training Management',
-    to: '/theme/typography',
-    icon: 'cil-speedometer',
+    to: '/pages/trainings',
+    icon: 'cilSpreadsheet',
   },
   {
     component: 'CNavItem',
-    name: 'Training Sessions',
-    to: '/theme/typography',
-    icon: 'cil-speedometer',
+    name: 'Trainer Schedules',
+    to: '/pages/trainer-schedule',
+    icon: 'cilAlarm',
   },
   {
     component: 'CNavItem',
-    name: 'Attendance',
-    to: '/theme/typography',
-    icon: 'cil-check-circle',
-  },
-  {
-    component: 'CNavItem',
-    name: 'Report',
-    to: '/theme/typography',
-    icon: '',
-  },
-  {
-    component: 'CNavItem',
-    name: 'Account Setting',
-    to: '/theme/typography',
-    icon: '',
+    name: 'Client Progress',
+    to: '/pages/client-progress',
+    icon: 'cilChartLine',
   },
   {
     component: 'CNavItem',
     name: 'Logout',
     to: '/pages/logout',
-    icon: '',
+    icon: 'cilAccountLogout',
     onClick: 'handleLogout' 
   }
-  ,
-  
-]
+];
 
+export const personalTrainerNav = [
+  {
+    component: 'CNavItem',
+    name: 'Dashboard',
+    to: '/dashboard',
+    icon: 'cilHome',
+  },
+  {
+    component: 'CNavItem',
+    name: 'My Profile',
+    to: '/pages/my-profile',
+    icon: 'cilTablet',
+  },
+  {
+    component: 'CNavItem',
+    name: 'Training Management',
+    to: '/pages/trainings',
+    icon: 'cilSpreadsheet',
+  },
+  {
+    component: 'CNavItem',
+    name: 'Trainer Schedules',
+    to: '/pages/trainer-schedule',
+    icon: 'cilAlarm',
+  },
+  {
+    component: 'CNavItem',
+    name: 'Client Progress',
+    to: '/pages/client-progress',
+    icon: 'cilChartLine',
+  },
+  {
+    component: 'CNavItem',
+    name: 'Logout',
+    to: '/pages/logout',
+    icon: 'cilAccountLogout',
+    onClick: 'handleLogout' 
+  }
+];
 
+export const clientNav = [
+  {
+    component: 'CNavItem',
+    name: 'Dashboard',
+    to: '/dashboard',
+    icon: 'cilHome',
+  },
+  {
+    component: 'CNavItem',
+    name: 'My Profile',
+    to: '/pages/my-profile',
+    icon: 'cilTablet',
+  },
+  {
+    component: 'CNavItem',
+    name: 'My Schedules',
+    to: '/pages/my-schedule',
+    icon: 'cilAlarm',
+  },
+  {
+    component: 'CNavItem',
+    name: 'My Progress',
+    to: '/pages/my-progress',
+    icon: 'cilChartLine',
+  },
+  {
+    component: 'CNavItem',
+    name: 'Logout',
+    to: '/pages/logout',
+    icon: 'cilAccountLogout',
+    onClick: 'handleLogout' 
+  }
+];

@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
+  <div class="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center" :style="backgroundStyle">
     <CContainer>
       <CRow class="justify-content-center">
         <CCol :md="8">
@@ -30,10 +30,10 @@
                     </CCol>
                   </CRow>
                   <CRow v-if="loginError" class="mb-4">
-                <CCol>
-                  <CAlert color="danger">{{ loginError }}</CAlert>
-                </CCol>
-              </CRow>
+                    <CCol>
+                      <CAlert color="danger">{{ loginError }}</CAlert>
+                    </CCol>
+                  </CRow>
                 </CForm>
               </CCardBody>
             </CCard>
@@ -60,10 +60,6 @@ import { ref } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 
-
-
-
-
 export default {
   name: 'Login',
   setup() {
@@ -87,18 +83,15 @@ export default {
           email: form.value.email,
           password: form.value.password
         });
+        console.log(response.data);
+        localStorage.setItem('id', response.data.id);
+        localStorage.setItem('email', response.data.email);
+        localStorage.setItem('name', response.data.name);
+        localStorage.setItem('roles', response.data.role_user);
 
-        // Assuming your API returns a token upon successful login
-        const token = response.data.token;
-
-        // Save token to local storage or Vuex store for authentication
-        // localStorage.setItem('token', token);
-        
-        // Redirect to home page after successful login
         router.push('/');
       } catch (error) {
         console.error('Login failed:', error);
-        // Handle login error, show error message to user, etc.
         if (error.response.status === 422) {
           loginError.value = 'Invalid email or password. Please try again.';
         } else {
@@ -107,10 +100,18 @@ export default {
       }
     }
 
+    const backgroundStyle = {
+      backgroundImage: 'url(/bg.jpg)',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat'
+    };
+
     return {
       form,
       submitLogin,
-      loginError
+      loginError,
+      backgroundStyle
     };
   }
 }
