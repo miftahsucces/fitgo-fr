@@ -8,7 +8,7 @@
                 </CCardHeader>
                 <CCardBody>
                     <ag-grid-vue class="ag-theme-quartz" style="height: 300px;" :rowData="users"
-                        :columnDefs="columnDefs" :defaultColDef="defaultColDef" :pagination="pagination"
+                        :columnDefs="columnDefs" :defaultColDef="defaultColDef" :paginationAutoPageSize="true" :pagination="pagination"
                         :paginationPageSize="paginationPageSize"
                         :paginationPageSizeSelector="paginationPageSizeSelector" @grid-ready="onGridReady"
                         :frameworkComponents="frameworkComponents" :context="gridContext"></ag-grid-vue>

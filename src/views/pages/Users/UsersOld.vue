@@ -13,7 +13,7 @@
             :rowData="users"
             :columnDefs="columnDefs"
             :defaultColDef="defaultColDef"
-            :pagination="pagination"
+            :paginationAutoPageSize="true" :pagination="pagination"
             :paginationPageSize="paginationPageSize"
             :paginationPageSizeSelector="paginationPageSizeSelector"
             @grid-ready="onGridReady"

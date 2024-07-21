@@ -10,7 +10,7 @@
                 <CCardBody>
                     <div class="table-responsive">
                         <ag-grid-vue class="ag-theme-quartz" style="height: 300px; width: 100%;" :rowData="users"
-                            :columnDefs="columnDefs" :defaultColDef="defaultColDef" :pagination="pagination"
+                            :columnDefs="columnDefs" :defaultColDef="defaultColDef" :paginationAutoPageSize="true" :pagination="pagination"
                             :paginationPageSize="paginationPageSize"
                             :paginationPageSizeSelector="paginationPageSizeSelector" @grid-ready="onGridReady"
                             :frameworkComponents="frameworkComponents" :context="gridContext">
@@ -23,34 +23,51 @@
     <CModal alignment="center" :visible="visibleModalCerti" @close="() => { visibleModalCerti = false }"
         aria-labelledby="VerticallyCenteredExample">
         <CModalHeader>
-            <CModalTitle id="VerticallyCenteredExample">Schedule</CModalTitle>
+            <CModalTitle id="VerticallyCenteredExample">Body Composition</CModalTitle>
         </CModalHeader>
         <CModalBody>
-            <CRow class="mb-3">
-                <CFormLabel for="inputDate" class="col-sm-3 col-form-label">Date</CFormLabel>
-                <div class="col-sm-9">
-                    <CFormInput type="hidden" id="hiddenId" v-model="formData.hiddenId" />
-                    <CFormInput type="date" id="inputDate" v-model="formData.inputDate" />
-                </div>
-            </CRow>
-            <CRow class="mb-3">
-                <CFormLabel for="inputStartTime" class="col-sm-3 col-form-label">Start Time</CFormLabel>
-                <div class="col-sm-9">
-                    <CFormInput type="time" id="inputStartTime" v-model="formData.inputStartTime" />
-                </div>
-            </CRow>
-            <CRow class="mb-3">
-                <CFormLabel for="inputEndTime" class="col-sm-3 col-form-label">End Time</CFormLabel>
-                <div class="col-sm-9">
-                    <CFormInput type="time" id="inputEndTime" v-model="formData.inputEndTime" />
-                </div>
-            </CRow>
-            <CRow class="mb-3">
-                <CFormLabel for="inputLoc" class="col-sm-3 col-form-label">Location</CFormLabel>
-                <div class="col-sm-9">
-                    <CFormInput type="text" id="inputLoc" v-model="formData.inputLoc" />
-                </div>
-            </CRow>
+            <CForm class="row g-3 mb-3">
+                <CCol xs="6">
+                    <CFormLabel for="fullName">Berat Badan</CFormLabel>
+                    <CFormInput type="text" id="fullName" v-model="formData.fullName" required />
+                </CCol>
+                <CCol xs="6">
+                    <CFormLabel for="email">% Body Fat</CFormLabel>
+                    <CFormInput type="email" id="email" v-model="formData.email" required />
+                </CCol>
+                <CCol xs="6">
+                    <CFormLabel for="fullName">% Body Water</CFormLabel>
+                    <CFormInput type="text" id="fullName" v-model="formData.fullName" required />
+                </CCol>
+                <CCol xs="6">
+                    <CFormLabel for="email">Muscle Mass</CFormLabel>
+                    <CFormInput type="email" id="email" v-model="formData.email" required />
+                </CCol>
+                <CCol xs="6">
+                    <CFormLabel for="fullName">Phsyical Rating</CFormLabel>
+                    <CFormInput type="text" id="fullName" v-model="formData.fullName" required />
+                </CCol>
+                <CCol xs="6">
+                    <CFormLabel for="email">BMR</CFormLabel>
+                    <CFormInput type="email" id="email" v-model="formData.email" required />
+                </CCol>
+                <CCol xs="6">
+                    <CFormLabel for="fullName">Metabolic Age</CFormLabel>
+                    <CFormInput type="text" id="fullName" v-model="formData.fullName" required />
+                </CCol>
+                <CCol xs="6">
+                    <CFormLabel for="email">Bone Mass</CFormLabel>
+                    <CFormInput type="email" id="email" v-model="formData.email" required />
+                </CCol>
+                <CCol xs="6">
+                    <CFormLabel for="fullName">Visceral Fat</CFormLabel>
+                    <CFormInput type="text" id="fullName" v-model="formData.fullName" required />
+                </CCol>
+                <CCol xs="6">
+                    <CFormLabel for="email">Date</CFormLabel>
+                    <CFormInput type="email" id="email" v-model="formData.email" required />
+                </CCol>
+            </CForm>
         </CModalBody>
         <CModalFooter>
             <CButton class="btn-sm" color="secondary" @click="() => { visibleModalCerti = false }">Close</CButton>

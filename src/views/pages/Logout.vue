@@ -1,27 +1,28 @@
 <template>
-    <div>
-      <!-- Konten halaman logout -->tes
-    </div>
-  </template>
-  
-  <script>
-  import { authStore } from '@/store/authstore' // Sesuaikan dengan struktur proyek Anda
+  <div>
+    <!-- Konten halaman logout -->
+  </div>
+</template>
 
-  const useAuth = authStore();
-  
-  export default {
-    created() {
-      // Panggil metode logOut dari authStore saat komponen dibuat
-      useAuth.logOut()
-        .then(() => {
-          // Redirect ke halaman lain jika diperlukan setelah logout
-          this.$router.push('/pages/login') // Misalnya, redirect ke halaman utama
-        })
-        .catch(error => {
-          // Handle error jika logout gagal
-          console.error('Failed to logout:', error)
-        })
-    }
+<script setup>
+import { useRouter } from 'vue-router'
+import { onMounted } from 'vue'
+import { useAuthStore } from '@/store/authStore'
+
+const store = useAuthStore()
+const router = useRouter() 
+
+const handleLogout = async () => {
+  try {
+    await store.logout()
+    router.push({ name: 'Login' }) // Gunakan router instance untuk navigasi
+  } catch (error) {
+    console.error('Logout failed', error)
+    router.push({ name: 'Login' })
   }
-  </script>
-  
+}
+
+onMounted(() => {
+  handleLogout()
+})
+</script>

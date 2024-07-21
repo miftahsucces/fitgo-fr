@@ -8,7 +8,7 @@
                 </CCardHeader>
                 <CCardBody>
                     <ag-grid-vue class="ag-theme-quartz" style="height: 550px;" :rowData="programs"
-                        :columnDefs="columnDefs" :defaultColDef="defaultColDef" :pagination="pagination"
+                        :columnDefs="columnDefs" :defaultColDef="defaultColDef" :paginationAutoPageSize="true" :pagination="pagination"
                         :paginationPageSize="paginationPageSize"
                         :paginationPageSizeSelector="paginationPageSizeSelector" @grid-ready="onGridReady"
                         :frameworkComponents="frameworkComponents" :context="gridContext">
@@ -35,16 +35,16 @@ export default {
         return {
             programs: [],
             columnDefs: [
-                { headerName: 'No.', field: 'no', flex: 1, sortable: true, filter: true },
-                { headerName: 'Program', field: 'program', flex: 2, sortable: true, filter: true },
-                { headerName: 'Trainer', field: 'name', flex: 2, sortable: true, filter: true },
-                { headerName: 'Start Date', field: 'start_date', flex: 2, sortable: true, filter: true },
-                { headerName: 'End Date', field: 'end_date', flex: 2, sortable: true, filter: true },
-                { headerName: 'Days Total', field: 'total_days', flex: 2, sortable: true, filter: true },
+                { headerName: '#', field: 'no', width: 60, sortable: true, filter: true },
+                { headerName: 'Program', field: 'program', width: 200, sortable: true, filter: true },
+                { headerName: 'Trainer', field: 'name', width: 200, sortable: true, filter: true },
+                { headerName: 'Start Date', field: 'start_date', width: 180, sortable: true, filter: true },
+                { headerName: 'End Date', field: 'end_date', width: 180, sortable: true, filter: true },
+                { headerName: 'Days Total', field: 'total_days', width: 160, sortable: true, filter: true },
                 {
                     headerName: 'Actions',
                     field: 'actions',
-                    cellRenderer: 'EditButtonRenderer'
+                    cellRenderer: 'EditButtonRenderer',width: 200
                 },
             ],
             defaultColDef: {

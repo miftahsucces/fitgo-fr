@@ -7,7 +7,7 @@
               </CCardHeader>
               <CCardBody>
                   <ag-grid-vue class="ag-theme-quartz" style="height: 300px;" :rowData="users"
-                      :columnDefs="columnDefs" :defaultColDef="defaultColDef" :pagination="pagination"
+                      :columnDefs="columnDefs" :defaultColDef="defaultColDef" :paginationAutoPageSize="true" :pagination="pagination"
                       :paginationPageSize="paginationPageSize"
                       :paginationPageSizeSelector="paginationPageSizeSelector" @grid-ready="onGridReady"
                       :frameworkComponents="frameworkComponents" :context="gridContext">
@@ -71,15 +71,15 @@ export default {
       return {
           users: [],
           columnDefs: [
-              { headerName: 'No.', field: 'no', flex: 1, sortable: true, filter: true },
-              { headerName: 'Date', field: 'date_schedule', flex: 2, sortable: true, filter: true },
-              { headerName: 'Start Time', field: 'time_start', flex: 2, sortable: true, filter: true },
-              { headerName: 'End Time', field: 'time_end', flex: 2, sortable: true, filter: true },
-              { headerName: 'Location', field: 'location', flex: 2, sortable: true, filter: true },
+              { headerName: '#', field: 'no', width: 60, sortable: true, filter: true },
+              { headerName: 'Date', field: 'date_schedule', width: 200, sortable: true, filter: true },
+              { headerName: 'Start Time', field: 'time_start', width: 200, sortable: true, filter: true },
+              { headerName: 'End Time', field: 'time_end', width: 200, sortable: true, filter: true },
+              { headerName: 'Location', field: 'location', width: 200, sortable: true, filter: true },
               {
                   headerName: 'Actions',
                   field: 'actions',
-                  flex: 2,
+                  width: 200,
                   cellRenderer: ''
               },
           ],

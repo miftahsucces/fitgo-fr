@@ -14,7 +14,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import "ag-grid-community/styles/ag-theme-quartz.css";
 
-import '../axios';
+import axios from 'axios'
 
 const app = createApp(App)
 const pinia = createPinia();
@@ -26,6 +26,7 @@ app.use(CoreuiVue)
 app.use(VueSweetalert2);
 app.provide('icons', icons)
 app.component('CIcon', CIcon)
+app.component('axios', axios)
 app.component('DocsExample', DocsExample)
 
 app.mount('#app')

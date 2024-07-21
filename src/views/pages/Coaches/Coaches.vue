@@ -8,7 +8,7 @@
         </CCardHeader>
         <CCardBody>
           <ag-grid-vue class="ag-theme-quartz" style="height: 550px;" :rowData="users" :columnDefs="columnDefs"
-            :defaultColDef="defaultColDef" :pagination="pagination" :paginationPageSize="paginationPageSize"
+            :defaultColDef="defaultColDef" :paginationAutoPageSize="true" :pagination="pagination" :paginationPageSize="paginationPageSize"
             :paginationPageSizeSelector="paginationPageSizeSelector" @grid-ready="onGridReady"
             :frameworkComponents="frameworkComponents" :context="gridContext">
           </ag-grid-vue>
@@ -35,19 +35,14 @@ export default {
     return {
       users: [],
       columnDefs: [
-        { headerName: 'No.', field: 'no', flex: 1, sortable: true, filter: true },
-        { headerName: 'Nama', field: 'name', flex: 4, sortable: true, filter: true },
-        { headerName: 'Email', field: 'email', flex: 4, sortable: true, filter: true },
+        { headerName: '#', field: 'no', width: 60, sortable: true, filter: true },
+        { headerName: 'Nama', field: 'name', width: 250, sortable: true, filter: true },
+        { headerName: 'Email', field: 'email', width: 250, sortable: true, filter: true },
         {
           headerName: 'Actions',
           field: 'actions',
-          cellRenderer: 'EditBtnCoaches'
+          cellRenderer: 'EditBtnCoaches', width: 250
         },
-        {
-          headerName: '',
-          field: '',
-          cellRenderer: 'DeleteBtnCoaches',
-        }
       ],
       defaultColDef: {
         resizable: true,
@@ -89,7 +84,7 @@ export default {
       this.gridColumnApi = params.columnApi;
     },
     handleEditUser(userData) {
-      this.$router.push({ path: '/pages/edit-coaches/'+userData.id_user});
+      this.$router.push({ path: '/pages/edit-coaches/' + userData.id_user });
     },
   }
 }

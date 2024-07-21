@@ -19,7 +19,8 @@
                     <CInputGroupText>
                       <CIcon icon="cil-lock-locked" />
                     </CInputGroupText>
-                    <CFormInput v-model="form.password" type="password" placeholder="Password" autocomplete="current-password" />
+                    <CFormInput v-model="form.password" type="password" placeholder="Password"
+                      autocomplete="current-password" />
                   </CInputGroup>
                   <CRow>
                     <CCol :xs="6">
@@ -29,7 +30,7 @@
                       <CButton color="link" class="px-0"> Forgot password? </CButton>
                     </CCol>
                   </CRow>
-                  <CRow v-if="loginError" class="mb-4">
+                  <CRow v-if="loginError" class="mb-4 mt-3">
                     <CCol>
                       <CAlert color="danger">{{ loginError }}</CAlert>
                     </CCol>
@@ -42,7 +43,8 @@
                 <div>
                   <h2>Sign up</h2>
                   <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
+                    et dolore magna aliqua.
                   </p>
                   <CButton color="light" variant="outline" class="mt-3"> Register Now! </CButton>
                 </div>
@@ -55,48 +57,40 @@
   </div>
 </template>
 
+
+
 <script>
-import { ref } from 'vue'
+import { ref,reactive } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/store/authStore'
+import { login } from '@/services/auth_service'
 
 export default {
   name: 'Login',
   setup() {
     const router = useRouter();
+    const authStore = useAuthStore();
 
-    const form = ref({
+    // const form = ref({
+    //   email: '',
+    //   password: ''
+    // });
+    const form = reactive({
       email: '',
-      password: ''
-    });
+      password: '',
+    })
 
     const loginError = ref('');
-
-    const getToken = async () => {
-      await axios.get('/sanctum/csrf-cookie')
-    };
-
     const submitLogin = async () => {
       try {
-        await getToken();
-        const response = await axios.post('/login', {
-          email: form.value.email,
-          password: form.value.password
-        });
-        console.log(response.data);
-        localStorage.setItem('id', response.data.id);
-        localStorage.setItem('email', response.data.email);
-        localStorage.setItem('name', response.data.name);
-        localStorage.setItem('roles', response.data.role_user);
-
-        router.push('/');
+        const response = await login(form)
+        authStore.setUser(response.data.user)
+        authStore.setToken(response.data.access_token)
+        router.push('/')
       } catch (error) {
-        console.error('Login failed:', error);
-        if (error.response.status === 422) {
-          loginError.value = 'Invalid email or password. Please try again.';
-        } else {
-          loginError.value = 'Login failed. Please try again later.';
-        }
+        // loginError.value = error.response.data.errors
+        loginError.value = 'Invalid email or password. Please try again.';
       }
     }
 

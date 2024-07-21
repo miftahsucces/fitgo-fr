@@ -8,7 +8,7 @@
         </CCardHeader>
         <CCardBody>
           <ag-grid-vue class="ag-theme-quartz" style="height: 550px;" :rowData="programs" :columnDefs="columnDefs"
-            :defaultColDef="defaultColDef" :pagination="pagination" :paginationPageSize="paginationPageSize"
+            :defaultColDef="defaultColDef" :paginationAutoPageSize="true" :pagination="pagination" :paginationPageSize="paginationPageSize"
             :paginationPageSizeSelector="paginationPageSizeSelector" @grid-ready="onGridReady"
             :frameworkComponents="frameworkComponents" :context="gridContext">
           </ag-grid-vue>
@@ -58,13 +58,13 @@ export default {
     return {
       programs: [],
       columnDefs: [
-        { headerName: 'No.', field: 'no', flex: 1, sortable: true, filter: true },
-        { headerName: 'Program', field: 'program', flex: 4, sortable: true, filter: true },
-        { headerName: 'Description', field: 'desc', flex: 4, sortable: true, filter: true },
+        { headerName: '#', field: 'no', width: 60, sortable: true, filter: true },
+        { headerName: 'Program', field: 'program', width: 260, sortable: true, filter: true },
+        { headerName: 'Description', field: 'desc', width: 400, sortable: true, filter: true },
         {
           headerName: 'Actions',
           field: 'actions',
-          cellRenderer: 'EditButtonRenderer'
+          cellRenderer: 'EditButtonRenderer',width: 200
         },
       ],
       defaultColDef: {

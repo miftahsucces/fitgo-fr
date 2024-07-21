@@ -7,7 +7,7 @@
                 </CCardHeader>
                 <CCardBody>
                     <ag-grid-vue class="ag-theme-quartz" style="height: 550px;" :rowData="programs"
-                        :columnDefs="columnDefs" :defaultColDef="defaultColDef" :pagination="pagination"
+                        :columnDefs="columnDefs" :defaultColDef="defaultColDef" :paginationAutoPageSize="true" :pagination="pagination"
                         :paginationPageSize="paginationPageSize"
                         :paginationPageSizeSelector="paginationPageSizeSelector" @grid-ready="onGridReady"
                         :frameworkComponents="frameworkComponents" :context="gridContext">
@@ -34,16 +34,16 @@ export default {
         return {
             programs: [],
             columnDefs: [
-                { headerName: 'No.', field: 'no', flex: 1, sortable: true, filter: true },
-                { headerName: 'Name', field: 'name', flex: 2, sortable: true, filter: true },
-                { headerName: 'Age', field: 'umur', flex: 2, sortable: true, filter: true },
-                { headerName: 'Gender', field: 'jenis_kelamin', flex: 2, sortable: true, filter: true },
-                { headerName: 'Height', field: 'tinggi_badan', flex: 2, sortable: true, filter: true },
-                { headerName: 'Weight', field: 'berat_badan', flex: 2, sortable: true, filter: true },
+                { headerName: '#', field: 'no', width: 60, sortable: true, filter: true },
+                { headerName: 'Name', field: 'name', width: 200, sortable: true, filter: true },
+                { headerName: 'Age', field: 'umur', width: 160, sortable: true, filter: true },
+                { headerName: 'Gender', field: 'jenis_kelamin', width: 160, sortable: true, filter: true },
+                { headerName: 'Height', field: 'tinggi_badan', width: 160, sortable: true, filter: true },
+                { headerName: 'Weight', field: 'berat_badan', width: 160, sortable: true, filter: true },
                 {
                     headerName: 'Actions',
                     field: 'actions',
-                    cellRenderer: 'EditButtonRenderer'
+                    cellRenderer: 'EditButtonRenderer',width: 200
                 },
             ],
             defaultColDef: {
