@@ -1,6 +1,5 @@
 <template>
     <CRow>
-
         <CCol :xs="12" :md="12">
             <CCard class="">
                 <CCardHeader>
@@ -9,7 +8,6 @@
                 <CCardBody>
                     <CRow>
                         <CCol :xs="12">
-
                             <CFormGroup>
                                 <CForm class="row g-3 mb-3">
                                     <CCol md="2">
@@ -20,9 +18,9 @@
                                         </div>
                                     </CCol>
                                     <CCol md="10">
-                                        <div
-                                            class="py-1 px-3 mb-3 mt-2">
-                                            <CButton color="info" variant="outline" @click="triggerFileInput" class="btn-sm mb-3">
+                                        <div class="py-1 px-3 mb-3 mt-2">
+                                            <CButton color="info" variant="outline" @click="triggerFileInput"
+                                                class="btn-sm mb-3">
                                                 Change
                                                 Profile
                                                 Photo
@@ -35,22 +33,22 @@
                                         </div>
                                     </CCol>
                                     <hr class="mt-0" />
-                                    <CCol md="6">
+                                    <CCol md="6" style="display: none;">
                                         <CFormLabel for="memberId">ID Anggota</CFormLabel>
                                         <CFormInput type="text" id="memberId" v-model="formData.memberId" required
                                             disabled />
                                     </CCol>
-                                    <CCol xs="6">
+                                    <CCol md="6">
                                         <CFormLabel for="fullName">Nama Lengkap</CFormLabel>
                                         <CFormInput type="text" id="fullName" v-model="formData.fullName" required />
                                     </CCol>
-                                    <CCol xs="6">
+                                    <CCol md="6">
                                         <CFormLabel for="email">Email</CFormLabel>
                                         <CFormInput type="email" id="email" v-model="formData.email" required />
                                     </CCol>
-                                    <CCol xs="6">
-                                        <CFormLabel for="nohp">No. HP</CFormLabel>
-                                        <CFormInput type="text" id="nohp" v-model="formData.nohp" required />
+                                    <CCol md="6">
+                                        <CFormLabel for="phoneNumber">No. HP</CFormLabel>
+                                        <CFormInput type="text" id="phoneNumber" v-model="formData.phoneNumber" required />
                                     </CCol>
                                     <CCol md="6">
                                         <CFormLabel for="gender">Jenis Kelamin</CFormLabel>
@@ -64,15 +62,15 @@
                                         <CFormLabel for="dob">Tanggal Lahir</CFormLabel>
                                         <CFormInput type="date" id="dob" v-model="formData.dob" required />
                                     </CCol>
-                                    <CCol md="4">
+                                    <CCol md="6">
                                         <CFormLabel for="height">Tinggi Badan</CFormLabel>
                                         <CFormInput type="number" id="height" v-model="formData.height" required />
                                     </CCol>
-                                    <CCol md="4">
+                                    <CCol md="6">
                                         <CFormLabel for="weight">Berat Badan</CFormLabel>
                                         <CFormInput type="number" id="weight" v-model="formData.weight" required />
                                     </CCol>
-                                    <CCol md="4">
+                                    <CCol md="6">
                                         <CFormLabel for="bloodType">Golongan Darah</CFormLabel>
                                         <CFormSelect id="bloodType" v-model="formData.bloodType" required>
                                             <option value="">Pilih Golongan Darah</option>
@@ -192,9 +190,10 @@ export default {
                     formData.append(key, this.formData[key]);
                 }
 
-                const response = await axios.post('http://localhost:8000/api/coaches', formData, {
+                const response = await axios.post('http://localhost:8000/api/xyz/coaches', formData, {
                     headers: {
-                        'Content-Type': 'multipart/form-data'
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: 'Bearer ' + localStorage.getItem('access_token'),
                     }
                 });
 

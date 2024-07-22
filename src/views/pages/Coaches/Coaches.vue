@@ -36,8 +36,8 @@ export default {
       users: [],
       columnDefs: [
         { headerName: '#', field: 'no', width: 60, sortable: true, filter: true },
-        { headerName: 'Nama', field: 'name', width: 250, sortable: true, filter: true },
-        { headerName: 'Email', field: 'email', width: 250, sortable: true, filter: true },
+        { headerName: 'Nama', field: 'full_name', width: 230, sortable: true, filter: true },
+        { headerName: 'Email', field: 'email', width: 230, sortable: true, filter: true },
         {
           headerName: 'Actions',
           field: 'actions',
@@ -67,7 +67,12 @@ export default {
   methods: {
     async fetchUsers() {
       try {
-        const response = await axios.get('http://localhost:8000/api/coaches');
+        const response = await axios.get('http://localhost:8000/api/xyz/coaches', {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+          },
+        })
         this.users = response.data.data.map((user, index) => ({
           no: index + 1,
           ...user
