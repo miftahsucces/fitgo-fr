@@ -23,6 +23,7 @@ export const useAuthStore = defineStore('authStore', {
       localStorage.setItem('id', user.id)
       localStorage.setItem('tipe', user.tipe_user)
       localStorage.setItem('fullName', user.full_name )
+      localStorage.setItem('roles', user.tipe_user )
     },
     getUserId() {
       return this.user ? this.user.id : null

@@ -55,13 +55,13 @@ export default {
         return {
             users: [],
             columnDefs: [
-                { headerName: '#', field: 'no', width: 60, sortable: true, filter: true },
+                { headerName: '#', field: 'no', width: 60, sortable: false, filter: false },
                 { headerName: 'Spesialist', field: 'spesialis', width: 400, sortable: true, filter: true },
                 {
                     headerName: 'Actions',
                     field: 'actions',
-                    width: 250,
-                    cellRenderer: 'EditBtnSpsRender'
+                    width: 400,
+                    cellRenderer: 'EditBtnSpsRender', sortable: false, filter: false
                 },
             ],
             defaultColDef: {

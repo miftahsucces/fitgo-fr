@@ -8,7 +8,7 @@
   
   <script>
   export default {
-    name: 'BtnInputRender',
+    name: 'BtnRender',
     props: {
       data: Object,
       context: Object
@@ -22,7 +22,7 @@
         }
       },
       onClickDelete() {
-        if (this.params.context && this.params.context.componentParent && this.params.context.componentParent.handleEdit) {
+        if (this.params.context && this.params.context.componentParent && this.params.context.componentParent.handleDelete) {
           this.params.context.componentParent.handleDelete(this.params.data);
         } else {
           console.error('Context or handleDeleteUser method is undefined');

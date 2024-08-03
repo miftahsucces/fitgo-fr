@@ -8,8 +8,8 @@
 </template>
   
   <script>
-  import TableToday from './TrainerToday.vue'
-  import TableAllJadwal from './TrainerAll.vue'
+  import TableToday from './MyToday.vue'
+  import TableAllJadwal from './MyAll.vue'
   
   export default {
     components: {

@@ -8,8 +8,8 @@
                 </CCardHeader>
                 <CCardBody>
                     <ag-grid-vue class="ag-theme-quartz" style="height: 550px;" :rowData="programs"
-                        :columnDefs="columnDefs" :defaultColDef="defaultColDef" :paginationAutoPageSize="true" :pagination="pagination"
-                        :paginationPageSize="paginationPageSize"
+                        :columnDefs="columnDefs" :defaultColDef="defaultColDef" :paginationAutoPageSize="true"
+                        :pagination="pagination" :paginationPageSize="paginationPageSize"
                         :paginationPageSizeSelector="paginationPageSizeSelector" @grid-ready="onGridReady"
                         :frameworkComponents="frameworkComponents" :context="gridContext">
                     </ag-grid-vue>
@@ -37,14 +37,14 @@ export default {
             columnDefs: [
                 { headerName: '#', field: 'no', width: 60, sortable: true, filter: true },
                 { headerName: 'Program', field: 'program', width: 200, sortable: true, filter: true },
-                { headerName: 'Trainer', field: 'name', width: 200, sortable: true, filter: true },
+                { headerName: 'Trainer', field: 'full_name', width: 200, sortable: true, filter: true },
                 { headerName: 'Start Date', field: 'start_date', width: 180, sortable: true, filter: true },
                 { headerName: 'End Date', field: 'end_date', width: 180, sortable: true, filter: true },
                 { headerName: 'Days Total', field: 'total_days', width: 160, sortable: true, filter: true },
                 {
                     headerName: 'Actions',
                     field: 'actions',
-                    cellRenderer: 'EditButtonRenderer',width: 200
+                    cellRenderer: 'EditButtonRenderer', width: 200
                 },
             ],
             defaultColDef: {
@@ -75,7 +75,13 @@ export default {
     methods: {
         async fetchPrograms() {
             try {
-                const response = await axios.get('http://localhost:8000/api/schedule');
+                const response = await axios.get('http://localhost:8000/api/xyz/schedule',
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+                        },
+                    })
                 this.programs = response.data.data.map((program, index) => ({
                     no: index + 1,
                     ...program
@@ -89,11 +95,17 @@ export default {
         },
         async saveChanges() {
             try {
-                const response = await axios.post('http://localhost:8000/api/programs', {
+                const response = await axios.post('http://localhost:8000/api/xyz/programs', {
                     id: this.formData.inputId,
                     program: this.formData.inputProgram,
                     desc: this.formData.inputDesc,
-                });
+                },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+                        },
+                    });
                 console.log('Data successfully saved:', response.data);
                 this.$swal({
                     title: "Good job!",

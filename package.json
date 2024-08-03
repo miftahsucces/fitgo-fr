@@ -31,6 +31,7 @@
     "axios": "^1.7.2",
     "chart.js": "^4.4.2",
     "jquery": "^3.7.1",
+    "mitt": "^3.0.1",
     "pinia": "^2.1.7",
     "select2": "^4.1.0-rc.0",
     "simplebar-vue": "^2.3.3",

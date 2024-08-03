@@ -75,7 +75,13 @@ export default {
   methods: {
     async getScheduleData(idSchedule) {
       try {
-        const response = await axios.get(`http://localhost:8000/api/schedule/${idSchedule}`);
+        const response = await axios.get(`http://localhost:8000/api/xyz/schedule/${idSchedule}`,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+            },
+          })
         this.schedule = response.data.data;
         this.formData = {
           program: this.schedule.id_program,
@@ -88,7 +94,13 @@ export default {
     },
     async fetchPrograms() {
       try {
-        const response = await axios.get('http://localhost:8000/api/programs');
+        const response = await axios.get('http://localhost:8000/api/xyz/programs',
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+            },
+          })
         const { data } = response;
         this.programs = data.data.map(program => ({
           label: program.program,
@@ -100,11 +112,17 @@ export default {
     },
     async fetchTrainers() {
       try {
-        const response = await axios.get('http://localhost:8000/api/coaches');
+        const response = await axios.get('http://localhost:8000/api/xyz/coaches',
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+            },
+          });
         const { data } = response;
         this.trainers = data.data.map(trainer => ({
-          label: trainer.name,
-          id: trainer.id
+          label: trainer.full_name,
+          id: trainer.id_user
         }));
       } catch (error) {
         console.error('Error fetching trainers:', error);
@@ -113,10 +131,16 @@ export default {
     async saveChanges() {
       try {
 
-        const response = await axios.post('http://localhost:8000/api/schedule', {
+        const response = await axios.post('http://localhost:8000/api/xyz/schedule', {
           id_program: this.formData.program,
           id_trainer: this.formData.trainer,
-        });
+        },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+            },
+          })
         console.log('Data successfully saved:', response.data);
         this.$swal({
           title: "Good job!",

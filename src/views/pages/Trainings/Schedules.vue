@@ -8,8 +8,8 @@
                 </CCardHeader>
                 <CCardBody>
                     <ag-grid-vue class="ag-theme-quartz" style="height: 300px;" :rowData="users"
-                        :columnDefs="columnDefs" :defaultColDef="defaultColDef" :paginationAutoPageSize="true" :pagination="pagination"
-                        :paginationPageSize="paginationPageSize"
+                        :columnDefs="columnDefs" :defaultColDef="defaultColDef" :paginationAutoPageSize="true"
+                        :pagination="pagination" :paginationPageSize="paginationPageSize"
                         :paginationPageSizeSelector="paginationPageSizeSelector" @grid-ready="onGridReady"
                         :frameworkComponents="frameworkComponents" :context="gridContext">
                     </ag-grid-vue>
@@ -17,8 +17,8 @@
             </CCard>
         </CCol>
     </CRow>
-    <CModal alignment="center" :visible="visibleModalCerti"
-        @close="() => { visibleModalCerti = false }" aria-labelledby="VerticallyCenteredExample">
+    <CModal alignment="center" :visible="visibleModalCerti" @close="() => { visibleModalCerti = false }"
+        aria-labelledby="VerticallyCenteredExample">
         <CModalHeader>
             <CModalTitle id="VerticallyCenteredExample">Schedule</CModalTitle>
         </CModalHeader>
@@ -111,7 +111,13 @@ export default {
     methods: {
         async fetchSchedules() {
             try {
-                const response = await axios.get(`http://localhost:8000/api/schedule/detail/${this.$route.params.id}`);
+                const response = await axios.get(`http://localhost:8000/api/xyz/schedule/detail/${this.$route.params.id}`,
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+                        },
+                    });
                 const { data } = response;
                 if (data.status === 'success') {
                     this.users = data.data.map((user, index) => ({ ...user, no: index + 1 }));
@@ -124,14 +130,20 @@ export default {
         },
         async saveSchedule() {
             try {
-                const response = await axios.post('http://localhost:8000/api/schedule/detail', {
+                const response = await axios.post('http://localhost:8000/api/xyz/schedule/detail', {
                     id: this.formData.hiddenId,
-                    id_schedule : this.$route.params.id,
+                    id_schedule: this.$route.params.id,
                     date_schedule: this.formData.inputDate,
                     time_start: this.formData.inputStartTime,
                     time_end: this.formData.inputEndTime,
                     location: this.formData.inputLoc,
-                });
+                },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+                        },
+                    });
                 console.log('Data successfully saved:', response.data);
                 this.$swal({
                     title: "Good job!",
@@ -157,7 +169,7 @@ export default {
         },
         handleEditSch(data) {
             this.formData.hiddenId = data.id;
-            this.formData.inputDate = data.date;
+            this.formData.inputDate = data.date_schedule;
             this.formData.inputStartTime = data.time_start;
             this.formData.inputEndTime = data.time_end;
             this.formData.inputLoc = data.location;
@@ -165,7 +177,13 @@ export default {
         },
         async handleDeleteSch(data) {
             try {
-                const response = await axios.delete(`http://localhost:8000/api/schedules/detail/${data.id}`);
+                const response = await axios.delete(`http://localhost:8000/api/xyz/schedules/detail/${data.id}`,
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+                        },
+                    });
                 console.log('successfully deleted:', response.data);
                 this.$swal({
                     title: "Deleted!",

@@ -8,8 +8,8 @@
                 </CCardHeader>
                 <CCardBody>
                     <ag-grid-vue class="ag-theme-quartz" style="height: 300px;" :rowData="users"
-                        :columnDefs="columnDefs" :defaultColDef="defaultColDef" :paginationAutoPageSize="true" :pagination="pagination"
-                        :paginationPageSize="paginationPageSize"
+                        :columnDefs="columnDefs" :defaultColDef="defaultColDef" :paginationAutoPageSize="true"
+                        :pagination="pagination" :paginationPageSize="paginationPageSize"
                         :paginationPageSizeSelector="paginationPageSizeSelector" @grid-ready="onGridReady"
                         :frameworkComponents="frameworkComponents" :context="gridContext">
                     </ag-grid-vue>
@@ -55,13 +55,13 @@ export default {
         return {
             users: [],
             columnDefs: [
-                { headerName: '#', field: 'no', width: 60, sortable: true, filter: true },
-                { headerName: 'Spesialist', field: 'spesialis', width: 550, sortable: true, filter: true },
+                { headerName: '#', field: 'no', width: 60, sortable: false, filter: false },
+                { headerName: 'Spesialist', field: 'spesialis', width: 400, sortable: true, filter: true },
                 {
                     headerName: 'Actions',
                     field: 'actions',
-                    width: 160,
-                    cellRenderer: 'EditBtnSpsRender'
+                    width: 400,
+                    cellRenderer: 'EditBtnSpsRender', sortable: false, filter: false
                 },
             ],
             defaultColDef: {
@@ -88,7 +88,12 @@ export default {
     methods: {
         async fetchSpesialis() {
             try {
-                const response = await axios.get(`http://localhost:8000/api/coaches/spesialis/${localStorage.getItem('id')}`);
+                const response = await axios.get(`http://localhost:8000/api/xyz/coaches/spesialis/${localStorage.getItem('id')}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+                    },
+                })
                 const { data } = response;
                 if (data.status === 'success') {
                     this.users = data.data.map((user, index) => ({ ...user, no: index + 1 }));
@@ -101,11 +106,18 @@ export default {
         },
         async saveSpesialist() {
             try {
-                const response = await axios.post('http://localhost:8000/api/coaches/spesialis', {
-                    id: this.formData.hiddenId,
-                    id_user: localStorage.getItem('id'),
-                    spesialis: this.formData.inputSpesialist,
-                });
+                const response = await axios.post('http://localhost:8000/api/xyz/coaches/spesialis',
+                    {
+                        id: this.formData.hiddenId,
+                        id_user: localStorage.getItem('id'),
+                        spesialis: this.formData.inputSpesialist,
+                    },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+                        },
+                    });
                 console.log('Data successfully saved:', response.data);
                 this.$swal({
                     title: "Good job!",
@@ -133,7 +145,12 @@ export default {
         },
         async handleDeleteSpesialis(data) {
             try {
-                const response = await axios.delete(`http://localhost:8000/api/coaches/spesialis/${data.id}`);
+                const response = await axios.delete(`http://localhost:8000/api/xyz/coaches/spesialis/${data.id}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+                    },
+                })
                 console.log('successfully deleted:', response.data);
                 this.$swal({
                     title: "Deleted!",

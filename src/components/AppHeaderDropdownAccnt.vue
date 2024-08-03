@@ -12,13 +12,16 @@
       >
         Settings
       </CDropdownHeader>
-      <CDropdownItem>
+      <CDropdownItem component="button"
+      type="button" @click="profile"> 
         <CIcon icon="cil-user" /> Profile
       </CDropdownItem>
-      <CDropdownItem>
+      <!-- <CDropdownItem>
         <CIcon icon="cil-settings" /> Settings
-      </CDropdownItem>
-      <CDropdownItem>
+      </CDropdownItem> -->
+      
+      <CDropdownItem component="button"
+      type="button" @click="logout">
         <CIcon icon="cil-lock-locked" /> Logout
       </CDropdownItem>
     </CDropdownMenu>
@@ -27,12 +30,27 @@
 
 <script>
 import avatar from '@/assets/images/avatars/8.jpg'
+import { useRouter } from 'vue-router'
+
 export default {
   name: 'AppHeaderDropdownAccnt',
   setup() {
+
+    const router = useRouter()
+
+    function logout() {
+      router.push({ name: 'Logout' })
+    }
+
+    function profile() {
+      router.push({ name: 'My Profile' })
+    }
+
     return {
       avatar: avatar,
       itemsCount: 42,
+      logout,
+      profile
     }
   },
 }

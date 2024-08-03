@@ -8,9 +8,9 @@
         </CCardHeader>
         <CCardBody>
           <ag-grid-vue class="ag-theme-quartz" style="height: 550px;" :rowData="programs" :columnDefs="columnDefs"
-            :defaultColDef="defaultColDef" :paginationAutoPageSize="true" :pagination="pagination" :paginationPageSize="paginationPageSize"
-            :paginationPageSizeSelector="paginationPageSizeSelector" @grid-ready="onGridReady"
-            :frameworkComponents="frameworkComponents" :context="gridContext">
+            :defaultColDef="defaultColDef" :paginationAutoPageSize="true" :pagination="pagination"
+            :paginationPageSize="paginationPageSize" :paginationPageSizeSelector="paginationPageSizeSelector"
+            @grid-ready="onGridReady" :frameworkComponents="frameworkComponents" :context="gridContext">
           </ag-grid-vue>
         </CCardBody>
       </CCard>
@@ -64,7 +64,7 @@ export default {
         {
           headerName: 'Actions',
           field: 'actions',
-          cellRenderer: 'EditButtonRenderer',width: 200
+          cellRenderer: 'EditButtonRenderer', width: 200
         },
       ],
       defaultColDef: {
@@ -95,7 +95,12 @@ export default {
   methods: {
     async fetchPrograms() {
       try {
-        const response = await axios.get('http://localhost:8000/api/programs');
+        const response = await axios.get('http://localhost:8000/api/xyz/programs', {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+          },
+        })
         this.programs = response.data.data.map((program, index) => ({
           no: index + 1,
           ...program
@@ -114,11 +119,17 @@ export default {
     },
     async saveChanges() {
       try {
-        const response = await axios.post('http://localhost:8000/api/programs', {
+        const response = await axios.post('http://localhost:8000/api/xyz/programs', {
           id: this.formData.inputId,
           program: this.formData.inputProgram,
           desc: this.formData.inputDesc,
-        });
+        },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+            },
+          });
         console.log('Data successfully saved:', response.data);
         this.$swal({
           title: "Good job!",

@@ -1,69 +1,71 @@
 <template>
-    <CRow>
-        <CCol :xs="12">
-            <CCard class="mb-4">
-                <CCardHeader class="d-flex justify-content-between align-items-center">
-                    <strong>Data penyakit, cidera atau keluhan</strong>
-                    <CButton v-if="role != 3" color="primary btn-sm" @click="openAddModal" class="ml-auto">Add Data</CButton>
-                </CCardHeader>
-                <CCardBody>
-                    <ag-grid-vue class="ag-theme-quartz" style="height: 300px;" :rowData="users"
-                        :columnDefs="columnDefs" :defaultColDef="defaultColDef" :paginationAutoPageSize="true" :pagination="pagination"
-                        :paginationPageSize="paginationPageSize"
-                        :paginationPageSizeSelector="paginationPageSizeSelector" @grid-ready="onGridReady"
-                        :frameworkComponents="frameworkComponents" :context="gridContext">
-                    </ag-grid-vue>
-                </CCardBody>
-            </CCard>
-        </CCol>
-    </CRow>
-    <CModal alignment="center" :visible="visibleModalCerti" size="lg"
-        @close="() => { visibleModalCerti = false }" aria-labelledby="VerticallyCenteredExample">
-        <CModalHeader>
-            <CModalTitle id="VerticallyCenteredExample">Data penyakit, cidera atau keluhan</CModalTitle>
-        </CModalHeader>
-        <CModalBody>
-            <CRow class="mb-3">
-                <CFormLabel for="inputDate" class="col-sm-4 col-form-label">Data penyakit, cidera atau keluhan</CFormLabel>
-                <div class="col-sm-8">
-                    <CFormInput type="hidden" id="hiddenId" v-model="formData.hiddenId" />
-                    <CFormTextarea id="medicalHistory" v-model="formData.medicalHistory" rows="3">
-                                    </CFormTextarea>
-                </div>
-            </CRow>
-            
-        </CModalBody>
-        <CModalFooter>
-            <CButton class="btn-sm" color="secondary" @click="() => { visibleModalCerti = false }">Close
-            </CButton>
-            <CButton class="btn-sm" color="primary" @click="saveSchedule">Save changes</CButton>
-        </CModalFooter>
-    </CModal>
+    <div>
+        <CRow>
+            <CCol :xs="12">
+                <CCard class="mb-4">
+                    <CCardHeader class="d-flex justify-content-between align-items-center">
+                        <strong>Data penyakit, cidera atau keluhan</strong>
+                        <CButton v-if="role != 3" color="primary btn-sm" @click="openAddModal" class="ml-auto">Add Data
+                        </CButton>
+                    </CCardHeader>
+                    <CCardBody>
+                        <ag-grid-vue class="ag-theme-quartz" style="height: 300px;" :rowData="sickGrid"
+                            :columnDefs="columnDefs" :defaultColDef="defaultColDef" :paginationAutoPageSize="true"
+                            :pagination="pagination" :paginationPageSize="paginationPageSize"
+                            :paginationPageSizeSelector="paginationPageSizeSelector" :context="gridContext">
+                        </ag-grid-vue>
+                    </CCardBody>
+                </CCard>
+            </CCol>
+        </CRow>
+        <CModal alignment="center" :visible="visibleModalCerti" size="lg" @close="() => { visibleModalCerti = false }"
+            aria-labelledby="VerticallyCenteredExample">
+            <CModalHeader>
+                <CModalTitle id="VerticallyCenteredExample">Data penyakit, cidera atau keluhan</CModalTitle>
+            </CModalHeader>
+            <CModalBody>
+                <CRow class="mb-3">
+                    <CFormLabel for="desc" class="col-sm-4 col-form-label">Data penyakit, cidera atau keluhan
+                    </CFormLabel>
+                    <div class="col-sm-8">
+                        <CFormTextarea id="desc" v-model="formDataIllness.desc" rows="3">
+                        </CFormTextarea>
+                    </div>
+                </CRow>
+
+            </CModalBody>
+            <CModalFooter>
+                <CButton class="btn-sm" color="secondary" @click="() => { visibleModalCerti = false }">Close
+                </CButton>
+                <CButton class="btn-sm" color="primary" @click="saveIllness">Save changes</CButton>
+            </CModalFooter>
+        </CModal>
+    </div>
 </template>
 
 <script>
 import { AgGridVue } from "ag-grid-vue3";
 import axios from 'axios';
-import BtnInputRender from './BtnInputRender.vue';
+import { eventBus } from '@/eventBus.js';
+import BtnRender from './BtnRender.vue';
 
 export default {
-    name: 'users',
+    props: ['paramID', 'sickGrid'],
     components: {
         'ag-grid-vue': AgGridVue,
-        BtnInputRender,
+        BtnRender
     },
     data() {
         return {
-            users: [],
-            role : 0,
+            role: localStorage.getItem('roles'),
             columnDefs: [
-                { headerName: 'No.', field: 'no', flex: 1, sortable: true, filter: true },
-                { headerName: 'Data penyakit, cidera atau keluhan', field: 'date_schedule', flex: 7, sortable: true, filter: true },
+                { headerName: '#', field: 'no', width: 60, sortable: false, filter: false },
+                { headerName: 'Data penyakit, cidera atau keluhan', field: 'desc', width: 600, sortable: true, filter: true },
                 {
                     headerName: 'Actions',
                     field: 'actions',
-                    flex: 2,
-                    cellRenderer: 'BtnInputRender'
+                    width: 300,
+                    cellRenderer: 'BtnRender', sortable: false, filter: false
                 },
             ],
             defaultColDef: {
@@ -72,12 +74,10 @@ export default {
                 filter: true
             },
             visibleModalCerti: false,
-            formData: {
-                hiddenId: '',
-                inputDate: '',
-                inputStartTime: '',
-                inputEndTime: '',
-                inputLoc: '',
+            formDataIllness: {
+                id: '',
+                id_client: this.paramID,
+                desc: '',
             },
             pagination: true,
             paginationPageSize: 10,
@@ -87,87 +87,73 @@ export default {
             }
         };
     },
-    mounted() {
-        this.fetchSchedules();
-        this.fetchUserRole();
-    },
     methods: {
-        async fetchUserRole() {
-            this.role =localStorage.getItem('roles');
-        },
-        async fetchSchedules() {
+        async saveIllness() {
             try {
-                const response = await axios.get(`http://localhost:8000/api/schedule/detail/${this.$route.params.id}`);
-                const { data } = response;
-                if (data.status === 'success') {
-                    this.users = data.data.map((user, index) => ({ ...user, no: index + 1 }));
-                } else {
-                    console.error('Error fetching users:', data.status);
+                const formDataIllness = new FormData();
+                for (const key in this.formDataIllness) {
+                    formDataIllness.append(key, this.formDataIllness[key]);
                 }
-            } catch (error) {
-                console.error('Error fetching users:', error);
-            }
-        },
-        async saveSchedule() {
-            try {
-                const response = await axios.post('http://localhost:8000/api/schedule/detail', {
-                    id: this.formData.hiddenId,
-                    id_schedule : this.$route.params.id,
-                    date_schedule: this.formData.inputDate,
-                    time_start: this.formData.inputStartTime,
-                    time_end: this.formData.inputEndTime,
-                    location: this.formData.inputLoc,
+
+                const response = await axios.post('http://localhost:8000/api/xyz/progress/illness', formDataIllness, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+                    }
                 });
+
                 console.log('Data successfully saved:', response.data);
                 this.$swal({
                     title: "Good job!",
-                    text: "Schedule saved successfully!",
+                    text: "Successfully!",
                     icon: "success"
                 });
-                this.fetchSchedules();
-                this.visibleModalCerti = false; // Close the modal after saving
+                const userId = response.data.data.id;
+                eventBus.emit('illnessUpdated');
+                this.visibleModalCerti = false;
+                // this.resetForm();
             } catch (error) {
                 console.error('Error saving data:', error);
+                this.$swal({
+                    title: "Error!",
+                    text: "There was an error saving the user data.",
+                    icon: "error"
+                });
             }
         },
-        openAddModal() {
-            this.resetFormData();
-            this.visibleModalCerti = true;
-        },
-        resetFormData() {
-            this.formData.hiddenId = '';
-            this.formData.inputDate = '';
-            this.formData.inputStartTime = '';
-            this.formData.inputEndTime = '';
-            this.formData.inputLoc = '';
-        },
-        handleEditSch(data) {
-            this.formData.hiddenId = data.id;
-            this.formData.inputDate = data.date;
-            this.formData.inputStartTime = data.time_start;
-            this.formData.inputEndTime = data.time_end;
-            this.formData.inputLoc = data.location;
-            this.visibleModalCerti = true;
-        },
-        async handleDeleteSch(data) {
+        async handleDelete(data) {
             try {
-                const response = await axios.delete(`http://localhost:8000/api/schedules/detail/${data.id}`);
+                const response = await axios.delete(`http://localhost:8000/api/xyz/progress/sick/${data.id}`, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+                    }
+                });
                 console.log('successfully deleted:', response.data);
                 this.$swal({
                     title: "Deleted!",
-                    text: "Schedule successfully deleted",
+                    text: "Successfully deleted",
                     icon: "success"
                 });
-                this.fetchSchedules();
-                this.visibleModalCerti = false; // Close the modal after saving
+                
+                eventBus.emit('illnessUpdated');
             } catch (error) {
                 console.error('Error deleting user:', error);
             }
         },
-        onGridReady(params) {
-            this.gridApi = params.api;
-            this.gridColumnApi = params.columnApi;
-        }
+        handleEdit(data) {
+            this.formDataIllness.id = data.id;
+            this.formDataIllness.desc = data.desc;
+            this.visibleModalCerti = true;
+        },
+        openAddModal() {
+            this.resetformDataIllness();
+            this.visibleModalCerti = true;
+        },
+        resetformDataIllness() {
+            this.formDataIllness.id = '';
+            this.formDataIllness.desc = '';
+        },
     }
 }
 </script>

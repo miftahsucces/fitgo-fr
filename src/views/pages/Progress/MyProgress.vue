@@ -10,7 +10,7 @@
             <CTableBody>
               <CTableRow>
                 <CTableDataCell style="width: 15%;"><strong>Nama</strong></CTableDataCell>
-                <CTableDataCell style="width: 35%;">{{ formData.name }}</CTableDataCell>
+                <CTableDataCell style="width: 35%;">{{ formData.full_name }}</CTableDataCell>
                 <CTableDataCell style="width: 15%;"><strong>Tanggal Lahir</strong></CTableDataCell>
                 <CTableDataCell style="width: 35%;">{{ formData.tanggal_lahir }}</CTableDataCell>
               </CTableRow>
@@ -28,7 +28,7 @@
               </CTableRow>
               <CTableRow>
                 <CTableDataCell style="width: 15%;"><strong>Gender</strong></CTableDataCell>
-                <CTableDataCell style="width: 35%;">{{ formData.gender_label }}</CTableDataCell>
+                <CTableDataCell style="width: 35%;">{{ formData.jenis_kelamin }}</CTableDataCell>
                 <CTableDataCell style="width: 15%;"><strong>Tinggi Badan</strong></CTableDataCell>
                 <CTableDataCell style="width: 35%;">{{ formData.tinggi_badan }}</CTableDataCell>
               </CTableRow>
@@ -55,7 +55,7 @@
 <script>
 import { AgGridVue } from "ag-grid-vue3";
 import axios from 'axios';
-import InputBody from './InputBody.vue';
+import InputBody from './ViewBody.vue';
 import InputOther from './InputOther.vue';
 import InputSick from './InputSick.vue';
 import InputDaily from './InputDaily.vue';
@@ -99,7 +99,12 @@ export default {
   methods: {
     async getRouteParamsData(id) {
       try {
-        const response = await axios.get(`http://localhost:8000/api/clients/${id}`);
+        const response = await axios.get(`http://localhost:8000/api/xyz/clients/${id}`, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+          }
+        });
         this.formData = response.data.data; // Sesuaikan dengan struktur data dari API Anda
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -107,7 +112,12 @@ export default {
     },
     async fetchPrograms() {
       try {
-        const response = await axios.get('http://localhost:8000/api/programs');
+        const response = await axios.get('http://localhost:8000/api/xyz/programs', {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+          }
+        });
         const { data } = response;
         this.programs = data.data.map(program => ({
           label: program.program,
@@ -119,7 +129,12 @@ export default {
     },
     async fetchTrainers() {
       try {
-        const response = await axios.get('http://localhost:8000/api/coaches');
+        const response = await axios.get('http://localhost:8000/api/xyz/coaches', {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+          }
+        });
         const { data } = response;
         this.trainers = data.data.map(trainer => ({
           label: trainer.name,
@@ -131,10 +146,16 @@ export default {
     },
     async saveChanges() {
       try {
-        const response = await axios.post('http://localhost:8000/api/schedule', {
+        const response = await axios.post('http://localhost:8000/api/xyz/schedule', {
           id_program: this.formData.program,
           id_trainer: this.formData.trainer,
-        });
+        },
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+            }
+          });
         console.log('Data successfully saved:', response.data);
         this.$swal({
           title: "Good job!",

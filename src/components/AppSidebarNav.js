@@ -57,7 +57,7 @@ const AppSidebarNav = defineComponent({
     const firstRender = ref(true)
     const userRole = localStorage.getItem("roles"); // getUserRole() // Get the user role
     let nav = []
-
+    console.log(userRole)
     if (userRole === '1') {
       nav = adminNav
     } else if (userRole === '2') {

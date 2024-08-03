@@ -72,7 +72,7 @@ export default {
         return {
             users: [],
             columnDefs: [
-                { headerName: '#', field: 'no', width: 60, sortable: true, filter: true },
+                { headerName: '#', field: 'no', width: 60, sortable: false, filter: false },
                 { headerName: 'Organization', field: 'organization', width: 160, sortable: true, filter: true },
                 { headerName: 'Program', field: 'program', width: 400, sortable: true, filter: true },
                 { headerName: 'Year', field: 'year', width: 100, sortable: true, filter: true },
@@ -80,8 +80,8 @@ export default {
                 {
                     headerName: 'Actions',
                     field: 'actions',
-                    width: 200,
-                    cellRenderer: 'BtnCrtRender'
+                    width: 350,
+                    cellRenderer: 'BtnCrtRender', sortable: false, filter: false
                 },
             ],
             defaultColDef: {

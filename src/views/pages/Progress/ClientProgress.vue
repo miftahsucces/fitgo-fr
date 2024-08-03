@@ -7,8 +7,8 @@
                 </CCardHeader>
                 <CCardBody>
                     <ag-grid-vue class="ag-theme-quartz" style="height: 550px;" :rowData="programs"
-                        :columnDefs="columnDefs" :defaultColDef="defaultColDef" :paginationAutoPageSize="true" :pagination="pagination"
-                        :paginationPageSize="paginationPageSize"
+                        :columnDefs="columnDefs" :defaultColDef="defaultColDef" :paginationAutoPageSize="true"
+                        :pagination="pagination" :paginationPageSize="paginationPageSize"
                         :paginationPageSizeSelector="paginationPageSizeSelector" @grid-ready="onGridReady"
                         :frameworkComponents="frameworkComponents" :context="gridContext">
                     </ag-grid-vue>
@@ -35,7 +35,7 @@ export default {
             programs: [],
             columnDefs: [
                 { headerName: '#', field: 'no', width: 60, sortable: true, filter: true },
-                { headerName: 'Name', field: 'name', width: 200, sortable: true, filter: true },
+                { headerName: 'Name', field: 'full_name', width: 200, sortable: true, filter: true },
                 { headerName: 'Age', field: 'umur', width: 160, sortable: true, filter: true },
                 { headerName: 'Gender', field: 'jenis_kelamin', width: 160, sortable: true, filter: true },
                 { headerName: 'Height', field: 'tinggi_badan', width: 160, sortable: true, filter: true },
@@ -43,7 +43,7 @@ export default {
                 {
                     headerName: 'Actions',
                     field: 'actions',
-                    cellRenderer: 'EditButtonRenderer',width: 200
+                    cellRenderer: 'EditButtonRenderer', width: 200
                 },
             ],
             defaultColDef: {
@@ -69,12 +69,17 @@ export default {
         };
     },
     mounted() {
-        this.fetchPrograms();
+        this.fetchPrograms(localStorage.getItem('id'));
     },
     methods: {
-        async fetchPrograms() {
+        async fetchPrograms(id) {
             try {
-                const response = await axios.get('http://localhost:8000/api/progress/trainer/PT0240004');
+                const response = await axios.get(`http://localhost:8000/api/xyz/progress/trainer/${id}`, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+                    }
+                });
                 this.programs = response.data.data.map((program, index) => ({
                     no: index + 1,
                     ...program
@@ -88,10 +93,15 @@ export default {
         },
         async saveChanges() {
             try {
-                const response = await axios.post('http://localhost:8000/api/programs', {
+                const response = await axios.post('http://localhost:8000/api/xyz/programs', {
                     id: this.formData.inputId,
                     program: this.formData.inputProgram,
                     desc: this.formData.inputDesc,
+                }, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+                    }
                 });
                 console.log('Data successfully saved:', response.data);
                 this.$swal({
@@ -111,7 +121,7 @@ export default {
         handleEditProgress(data) {
             console.log(data.id_user);
             const id_user = data.id_user;
-            this.$router.push({ name: 'Input Progress' ,params: { id: id_user }});
+            this.$router.push({ name: 'Input Progress', params: { id: id_user } });
         },
         async handleDeleteProgram(data) {
             console.log('Delete Program:', data);

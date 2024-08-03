@@ -8,8 +8,8 @@
                 </CCardHeader>
                 <CCardBody>
                     <ag-grid-vue class="ag-theme-quartz" style="height: 300px;" :rowData="users"
-                        :columnDefs="columnDefs" :defaultColDef="defaultColDef" :paginationAutoPageSize="true" :pagination="pagination"
-                        :paginationPageSize="paginationPageSize"
+                        :columnDefs="columnDefs" :defaultColDef="defaultColDef" :paginationAutoPageSize="true"
+                        :pagination="pagination" :paginationPageSize="paginationPageSize"
                         :paginationPageSizeSelector="paginationPageSizeSelector" @grid-ready="onGridReady"
                         :frameworkComponents="frameworkComponents" :context="gridContext">
                     </ag-grid-vue>
@@ -17,8 +17,8 @@
             </CCard>
         </CCol>
     </CRow>
-    <CModal alignment="center" :visible="visibleModalCerti"
-        @close="() => { visibleModalCerti = false }" aria-labelledby="VerticallyCenteredExample">
+    <CModal alignment="center" :visible="visibleModalCerti" @close="() => { visibleModalCerti = false }"
+        aria-labelledby="VerticallyCenteredExample">
         <CModalHeader>
             <CModalTitle id="VerticallyCenteredExample">Certification</CModalTitle>
         </CModalHeader>
@@ -72,16 +72,16 @@ export default {
         return {
             users: [],
             columnDefs: [
-                { headerName: '#', field: 'no', width: 60, sortable: true, filter: true },
-                { headerName: 'Organization', field: 'organization', width: 180, sortable: true, filter: true },
-                { headerName: 'Program', field: 'program', width: 180, sortable: true, filter: true },
-                { headerName: 'Year', field: 'year', width: 120, sortable: true, filter: true },
-                { headerName: 'Location', field: 'location', width: 140, sortable: true, filter: true },
+                { headerName: '#', field: 'no', width: 60, sortable: false, filter: false },
+                { headerName: 'Organization', field: 'organization', width: 160, sortable: true, filter: true },
+                { headerName: 'Program', field: 'program', width: 400, sortable: true, filter: true },
+                { headerName: 'Year', field: 'year', width: 100, sortable: true, filter: true },
+                { headerName: 'Location', field: 'location', width: 150, sortable: true, filter: true },
                 {
                     headerName: 'Actions',
                     field: 'actions',
-                    width: 160,
-                    cellRenderer: 'BtnCrtRender'
+                    width: 350,
+                    cellRenderer: 'BtnCrtRender', sortable: false, filter: false
                 },
             ],
             defaultColDef: {
@@ -108,7 +108,12 @@ export default {
     methods: {
         async fetchCertification() {
             try {
-                const response = await axios.get(`http://localhost:8000/api/coaches/certification/${localStorage.getItem('id')}`);
+                const response = await axios.get(`http://localhost:8000/api/xyz/coaches/certification/${localStorage.getItem('id')}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+                    },
+                })
                 const { data } = response;
                 if (data.status === 'success') {
                     this.users = data.data.map((user, index) => ({ ...user, no: index + 1 }));
@@ -121,14 +126,21 @@ export default {
         },
         async saveCertification() {
             try {
-                const response = await axios.post('http://localhost:8000/api/coaches/certification', {
-                    id: this.formData.hiddenId,
-                    id_user: localStorage.getItem('id'),
-                    organization: this.formData.inputOrg,
-                    program: this.formData.inputProgram,
-                    year: this.formData.inputYear,
-                    location: this.formData.inputLoc,
-                });
+                const response = await axios.post('http://localhost:8000/api/xyz/coaches/certification',
+                    {
+                        id: this.formData.hiddenId,
+                        id_user: localStorage.getItem('id'),
+                        organization: this.formData.inputOrg,
+                        program: this.formData.inputProgram,
+                        year: this.formData.inputYear,
+                        location: this.formData.inputLoc,
+                    },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+                        },
+                    });
                 console.log('Data successfully saved:', response.data);
                 this.$swal({
                     title: "Good job!",
@@ -159,7 +171,12 @@ export default {
         },
         async handleDeleteCerti(data) {
             try {
-                const response = await axios.delete(`http://localhost:8000/api/coaches/certification/${data.id}`);
+                const response = await axios.delete(`http://localhost:8000/api/xyz/coaches/certification/${data.id}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+                    },
+                })
                 console.log('successfully deleted:', response.data);
                 this.$swal({
                     title: "Deleted!",

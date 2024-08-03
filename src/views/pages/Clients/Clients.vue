@@ -33,13 +33,15 @@ export default {
     return {
       users: [],
       columnDefs: [
-        { headerName: '#', field: 'no', width: 60, sortable: true, filter: true },
-        { headerName: 'Nama', field: 'name', width: 250, sortable: true, filter: true },
-        { headerName: 'Email', field: 'email', width: 250, sortable: true, filter: true },
+      { headerName: '#', field: 'no', width: 60, sortable: false, filter: false },
+        { headerName: 'Nama', field: 'full_name', width: 230, sortable: true, filter: true },
+        { headerName: 'Email', field: 'email', width: 230, sortable: true, filter: true },
+        { headerName: 'Jenis Kelamin', field: 'gender', width: 230, sortable: true, filter: true },
+        { headerName: 'Umur', field: 'umur', width: 230, sortable: true, filter: true },
         {
           headerName: 'Actions',
           field: 'actions',
-          cellRenderer: 'BtnClientsRender', width: 250
+          cellRenderer: 'BtnClientsRender', width: 250, sortable: false, filter: false
         },
       ],
       defaultColDef: {
@@ -64,7 +66,12 @@ export default {
   methods: {
     async fetchUsers() {
       try {
-        const response = await axios.get('http://localhost:8000/api/clients');
+        const response = await axios.get('http://localhost:8000/api/xyz/clients', {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+          },
+        })
         this.users = response.data.data.map((user, index) => ({
           no: index + 1,
           ...user

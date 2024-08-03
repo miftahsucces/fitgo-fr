@@ -35,13 +35,15 @@ export default {
     return {
       users: [],
       columnDefs: [
-        { headerName: '#', field: 'no', width: 60, sortable: true, filter: true },
+        { headerName: '#', field: 'no', width: 60, sortable: false, filter: false },
         { headerName: 'Nama', field: 'full_name', width: 230, sortable: true, filter: true },
         { headerName: 'Email', field: 'email', width: 230, sortable: true, filter: true },
+        { headerName: 'Jenis Kelamin', field: 'gender', width: 230, sortable: true, filter: true },
+        { headerName: 'Umur', field: 'umur', width: 230, sortable: true, filter: true },
         {
           headerName: 'Actions',
           field: 'actions',
-          cellRenderer: 'EditBtnCoaches', width: 250
+          cellRenderer: 'EditBtnCoaches', width: 250, sortable: false, filter: false
         },
       ],
       defaultColDef: {

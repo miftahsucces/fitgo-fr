@@ -10,11 +10,13 @@
             <CForm class="row g-3 mb-3">
               <CCol md="6">
                 <CFormLabel for="program">Program</CFormLabel>
-                <v-select :options="programs" v-model="formData.program" id="program" :reduce="(option) => option.id"></v-select>
+                <v-select :options="programs" v-model="formData.program" id="program"
+                  :reduce="(option) => option.id"></v-select>
               </CCol>
               <CCol md="6">
                 <CFormLabel for="trainer">Trainer</CFormLabel>
-                <v-select :options="trainers" v-model="formData.trainer" id="trainer" :reduce="(option) => option.id"></v-select>
+                <v-select :options="trainers" v-model="formData.trainer" id="trainer"
+                  :reduce="(option) => option.id"></v-select>
               </CCol>
               <CCol md="12">
                 <CFormLabel for="desc">Description</CFormLabel>
@@ -28,7 +30,7 @@
       </CCard>
     </CCol>
     <CCol :xs="12">
-     
+
     </CCol>
   </CRow>
 </template>
@@ -64,36 +66,54 @@ export default {
   methods: {
     async fetchPrograms() {
       try {
-        const response = await axios.get('http://localhost:8000/api/programs');
+        const response = await axios.get('http://localhost:8000/api/xyz/programs',
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+            },
+          })
         const { data } = response;
         this.programs = data.data.map(program => ({
-                        label: program.program,
-                        id: program.id
-                    }));
+          label: program.program,
+          id: program.id
+        }));
       } catch (error) {
         console.error('Error fetching programs:', error);
       }
     },
     async fetchTrainers() {
       try {
-        const response = await axios.get('http://localhost:8000/api/coaches');
+        const response = await axios.get('http://localhost:8000/api/xyz/coaches',
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+            },
+          });
         const { data } = response;
         this.trainers = data.data.map(trainer => ({
-                        label: trainer.name,
-                        id: trainer.id
-                    }));
+          label: trainer.full_name,
+          id: trainer.id_user
+        }));
       } catch (error) {
         console.error('Error fetching trainers:', error);
       }
     },
     async saveChanges() {
       try {
-        
-        const response = await axios.post('http://localhost:8000/api/schedule', {
+
+        const response = await axios.post('http://localhost:8000/api/xyz/schedule', {
           id_program: this.formData.program,
           id_trainer: this.formData.trainer,
           desc: this.formData.desc,
-        });
+        },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+            },
+          });
         console.log('Data successfully saved:', response.data);
         this.$swal({
           title: "Good job!",

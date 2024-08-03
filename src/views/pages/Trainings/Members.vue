@@ -8,8 +8,8 @@
                 </CCardHeader>
                 <CCardBody>
                     <ag-grid-vue class="ag-theme-quartz" style="height: 300px;" :rowData="users"
-                        :columnDefs="columnDefs" :defaultColDef="defaultColDef" :paginationAutoPageSize="true" :pagination="pagination"
-                        :paginationPageSize="paginationPageSize"
+                        :columnDefs="columnDefs" :defaultColDef="defaultColDef" :paginationAutoPageSize="true"
+                        :pagination="pagination" :paginationPageSize="paginationPageSize"
                         :paginationPageSizeSelector="paginationPageSizeSelector" @grid-ready="onGridReady"
                         :frameworkComponents="frameworkComponents" :context="gridContext"></ag-grid-vue>
                 </CCardBody>
@@ -26,7 +26,8 @@
                     <CFormLabel for="inputMember" class="col-sm-4 col-form-label">Member Name</CFormLabel>
                     <div class="col-sm-8">
                         <CFormInput type="hidden" id="hiddenId" v-model="formData.hiddenId" />
-                        <v-select :options="members" v-model="formData.inputMember" id="inputMember" :reduce="(option) => option.id"></v-select>
+                        <v-select :options="members" v-model="formData.inputMember" id="inputMember"
+                            :reduce="(option) => option.id"></v-select>
                     </div>
                 </CRow>
             </CModalBody>
@@ -58,7 +59,7 @@ export default {
             members: [],
             columnDefs: [
                 { headerName: 'No.', field: 'no', flex: 1, sortable: true, filter: true },
-                { headerName: 'Member Name', field: 'name', flex: 4, sortable: true, filter: true },
+                { headerName: 'Member Name', field: 'full_name', flex: 4, sortable: true, filter: true },
                 { headerName: 'Gender', field: 'jenis_kelamin', flex: 4, sortable: true, filter: true },
                 { headerName: 'Age (year)', field: 'umur', flex: 4, sortable: true, filter: true },
                 {
@@ -98,7 +99,13 @@ export default {
     methods: {
         async fetchCertification() {
             try {
-                const response = await axios.get(`http://localhost:8000/api/schedule/member/${this.$route.params.id}`);
+                const response = await axios.get(`http://localhost:8000/api/xyz/schedule/member/${this.$route.params.id}`,
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+                        },
+                    });
                 const { data } = response;
                 if (data.status === 'success') {
                     this.users = data.data.map((user, index) => ({ ...user, no: index + 1 }));
@@ -111,12 +118,18 @@ export default {
         },
         async fetchMembers() {
             try {
-                const response = await axios.get('http://localhost:8000/api/clients');
+                const response = await axios.get('http://localhost:8000/api/xyz/clients',
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+                        },
+                    });
                 const { data } = response;
                 if (data.status === 'success') {
                     this.members = data.data.map(member => ({
-                        label: member.name,
-                        id: member.id
+                        label: member.full_name,
+                        id: member.id_user
                     }));
                 } else {
                     console.error('Error fetching members:', data.status);
@@ -127,11 +140,17 @@ export default {
         },
         async saveMember() {
             try {
-                const response = await axios.post('http://localhost:8000/api/schedule/member', {
+                const response = await axios.post('http://localhost:8000/api/xyz/schedule/member', {
                     id: this.formData.hiddenId,
-                    id_schedule : this.$route.params.id,
+                    id_schedule: this.$route.params.id,
                     id_client: this.formData.inputMember,
-                });
+                },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+                        },
+                    });
                 console.log('Data successfully saved:', response.data);
                 this.$swal({
                     title: "Good job!",
@@ -159,7 +178,13 @@ export default {
         },
         async handleDeleteCerti(data) {
             try {
-                const response = await axios.delete(`http://localhost:8000/api/coaches/certification/${data.id}`);
+                const response = await axios.delete(`http://localhost:8000/api/xyz/coaches/certification/${data.id}`,
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+                        },
+                    });
                 console.log('successfully deleted:', response.data);
                 this.$swal({
                     title: "Deleted!",

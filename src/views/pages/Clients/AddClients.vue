@@ -55,8 +55,8 @@
                                         <CFormLabel for="gender">Jenis Kelamin</CFormLabel>
                                         <CFormSelect id="gender" v-model="formData.gender" required>
                                             <option value="">Pilih Jenis Kelamin</option>
-                                            <option value="p">Laki-laki</option>
-                                            <option value="w">Perempuan</option>
+                                            <option value="male">Laki-laki</option>
+                                            <option value="female">Perempuan</option>
                                         </CFormSelect>
                                     </CCol>
                                     <CCol md="6">
@@ -181,9 +181,10 @@ export default {
                     formData.append(key, this.formData[key]);
                 }
 
-                const response = await axios.post('http://localhost:8000/api/clients', formData, {
+                const response = await axios.post('http://localhost:8000/api/xyz/clients', formData, {
                     headers: {
-                        'Content-Type': 'multipart/form-data'
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: 'Bearer ' + localStorage.getItem('access_token'),
                     }
                 });
 
